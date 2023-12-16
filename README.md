@@ -1,7 +1,34 @@
-# Stable Diffusion web UI
-A browser interface based on Gradio library for Stable Diffusion.
+# Stable Diffusion web UI-UX
+A bespoke, highly adaptable user interface for the Stable Diffusion, utilizing the powerful Gradio library. This cutting-edge browser interface offer an unparalleled level of customization and optimization for users, setting it apart from other web interfaces.
 
 ![](screenshot.png)
+
+## Optimizasions
+- Replacing all default Gradio stylesheets in the DOM with an optimized version that promote better visual coherence across components.
+- Eliminating inline styles and Svelte classes from the DOM to minimize clutter and improve efficiency.
+- Removing unnecessary "img2img Extra Networks" from the DOM to reduce duplicated images and event listeners.
+- Eradicating inline event listeners from "txt2img Extra Networks" cards and action buttons.
+- Applying an event delegation pattern to further streamline the code by consolidating event handling for "txt2img Extra Networks" cards and action buttons.
+
+## Features webui-ux 
+- A versatile micro-template engine that can be leveraged by other extensions
+- Customizable theme styles through a user-friendly configuration interface
+- Built-in console log
+- Option to ignore overrides
+- Support for tick marks on input range sliders for improved usability
+- Ability to switch between slider and number input modes, allowing users to enter values manually without displaying the slider.
+
+## Workspaces UI-UX (work in progress)
+The workspaces extension empowers you to create customized views and organize them according to your unique preferences. With an intuitive drag-and-drop interface, you can design workflows that are perfectly tailored to your specific requirements, giving you ultimate control over your work environment.
+
+![workspaces](https://github.com/anapnoe/stable-diffusion-webui-ux/assets/124302297/15db3c70-6fbf-4692-85f3-85cd8df58f47)
+
+[Become a supporter and get early access to Workspaces for UI-UX.](https://buymeacoffee.com/dayanbayah)
+
+## Todo
+- Improve Mobile Support
+- Fullscreen Gallery Support
+
 
 ## Features
 [Detailed feature showcase with images](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features):
@@ -88,10 +115,9 @@ A browser interface based on Gradio library for Stable Diffusion.
 - [Alt-Diffusion](https://arxiv.org/abs/2211.06679) support - see [wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#alt-diffusion) for instructions
 - Now without any bad letters!
 - Load checkpoints in safetensors format
-- Eased resolution restriction: generated image's dimensions must be a multiple of 8 rather than 64
+- Eased resolution restriction: generated image's dimension must be a multiple of 8 rather than 64
 - Now with a license!
 - Reorder elements in the UI from settings screen
-- [Segmind Stable Diffusion](https://huggingface.co/segmind/SSD-1B) support
 
 ## Installation and Running
 Make sure the required [dependencies](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Dependencies) are met and follow the instructions available for:
@@ -103,16 +129,10 @@ Alternatively, use online services (like Google Colab):
 
 - [List of Online Services](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Online-Services)
 
-### Installation on Windows 10/11 with NVidia-GPUs using release package
-1. Download `sd.webui.zip` from [v1.0.0-pre](https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.0.0-pre) and extract its contents.
-2. Run `update.bat`.
-3. Run `run.bat`.
-> For more details see [Install-and-Run-on-NVidia-GPUs](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs)
-
 ### Automatic Installation on Windows
 1. Install [Python 3.10.6](https://www.python.org/downloads/release/python-3106/) (Newer version of Python does not support torch), checking "Add Python to PATH".
 2. Install [git](https://git-scm.com/download/win).
-3. Download the stable-diffusion-webui repository, for example by running `git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git`.
+3. Download the stable-diffusion-webui repository, for example by running `git clone https://github.com/anapnoe/stable-diffusion-webui-ux.git`.
 4. Run `webui-user.bat` from Windows Explorer as normal, non-administrator, user.
 
 ### Automatic Installation on Linux
@@ -121,15 +141,13 @@ Alternatively, use online services (like Google Colab):
 # Debian-based:
 sudo apt install wget git python3 python3-venv libgl1 libglib2.0-0
 # Red Hat-based:
-sudo dnf install wget git python3 gperftools-libs libglvnd-glx 
-# openSUSE-based:
-sudo zypper install wget git python3 libtcmalloc4 libglvnd
+sudo dnf install wget git python3
 # Arch-based:
 sudo pacman -S wget git python3
 ```
 2. Navigate to the directory you would like the webui to be installed and execute the following command:
 ```bash
-wget -q https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh
+wget -q https://raw.githubusercontent.com/anapnoe/stable-diffusion-webui-ux/master/webui.sh
 ```
 3. Run `webui.sh`.
 4. Check `webui-user.sh` for options.
@@ -149,7 +167,7 @@ For the purposes of getting Google and other search engines to crawl the wiki, h
 ## Credits
 Licenses for borrowed code can be found in `Settings -> Licenses` screen, and also in `html/licenses.html` file.
 
-- Stable Diffusion - https://github.com/Stability-AI/stablediffusion, https://github.com/CompVis/taming-transformers
+- Stable Diffusion - https://github.com/CompVis/stable-diffusion, https://github.com/CompVis/taming-transformers
 - k-diffusion - https://github.com/crowsonkb/k-diffusion.git
 - GFPGAN - https://github.com/TencentARC/GFPGAN.git
 - CodeFormer - https://github.com/sczhou/CodeFormer
@@ -176,6 +194,5 @@ Licenses for borrowed code can be found in `Settings -> Licenses` screen, and al
 - TAESD - Ollin Boer Bohan - https://github.com/madebyollin/taesd
 - LyCORIS - KohakuBlueleaf
 - Restart sampling - lambertae - https://github.com/Newbeeer/diffusion_restart_sampling
-- Hypertile - tfernd - https://github.com/tfernd/HyperTile
 - Initial Gradio script - posted on 4chan by an Anonymous user. Thank you Anonymous user.
 - (You)
