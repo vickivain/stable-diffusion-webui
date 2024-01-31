@@ -2679,7 +2679,7 @@ span.star_count b {
     font-size: 14px;
     border-radius: 5px;
     line-height: 23px;
-    align-items: center;
+    align-items: start;
 }
 
 /* .tabs_extensions .wrap {
@@ -3247,10 +3247,11 @@ input[type=checkbox]:after {
 
 input[type=radio]:checked:after,
 input[type=checkbox]:checked:after {
-    content: "❖";
-    font-size: 170%;
+    content: "❖";   
     position: absolute;
     inset: 0;
+    transform: scale(1.5);
+    top:-1px;
 }
 
 .gradio-accordion .label-wrap > span{
