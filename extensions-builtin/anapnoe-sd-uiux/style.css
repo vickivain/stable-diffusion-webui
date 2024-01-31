@@ -2678,7 +2678,7 @@ span.star_count b {
     gap: 5px;
     font-size: 14px;
     border-radius: 5px;
-    line-height: 23px;
+    /*line-height: 23px;*/
     align-items: start;
 }
 
@@ -3259,6 +3259,14 @@ input[type=checkbox]:checked:after {
     align-items: center;
 }
 
+#interrogate,
+#deepbooru{
+    font-size:0px;
+}
+#interrogate > div,
+#deepbooru > div{
+    position:absolute;
+}
 
 /*
 input[type=checkbox]+span {
