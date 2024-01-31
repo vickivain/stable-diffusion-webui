@@ -786,7 +786,8 @@ label > span + div,
 [data-testid="block-info"] {
     display: flex;
     flex-direction: column;
-    text-wrap: wrap;
+    height: 100%;
+    white-space: normal;
 }
 .gradio-video .controls .inner{
  display: flex;
@@ -2041,7 +2042,7 @@ div#main-nav {
 .gradio-checkbox + div,
 .has-info + div,
 * .settings-comment {
-    margin: 5px 0;
+    /*margin: 5px 0;*/
     font-size: 10px;
     color: rgba(255, 255, 255, 0.4);
 }
