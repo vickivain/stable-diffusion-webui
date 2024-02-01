@@ -755,6 +755,7 @@ button:hover .mask-icon{
     background-color: transparent;
     outline: none;
     justify-content: space-between;
+    margin: 0;
 }
 
 label > span + div,
@@ -2042,10 +2043,17 @@ div#main-nav {
 .gradio-checkbox + div,
 .has-info + div,
 * .settings-comment {
-    /*margin: 5px 0;*/
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.4);
+    border: var(--ae-input-border-size) solid transparent;
+    margin-bottom: 5px;
+    vertical-align: middle;
+    margin-top: 0;
+    color: var(--ae-label-color);
+    font-family: inherit;
+    line-height: 14px;
 }
+
+
 
 * .settings-comment:has(a) {
     font-size: 0;
@@ -3272,12 +3280,14 @@ input[type=checkbox]:checked:after {
     position: absolute;
     inset: 0;
     transform: scale(1.5);
-    top:-1px;
 }
 
 .gradio-accordion .label-wrap > span{
     display: flex;
     align-items: center;
+}
+.gradio-checkbox > div.mask-icon{
+    margin: 0;
 }
 
 #interrogate,
