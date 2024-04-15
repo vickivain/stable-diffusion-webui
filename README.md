@@ -3,7 +3,7 @@ A bespoke, highly adaptable user interface for the Stable Diffusion, utilizing t
 
 ![](screenshot.png)
 
-## Optimizasions
+## Optimizations
 - Replacing all default Gradio stylesheets in the DOM with an optimized version that promote better visual coherence across components.
 - Eliminating inline styles and Svelte classes from the DOM to minimize clutter and improve efficiency.
 - Removing unnecessary "img2img Extra Networks" from the DOM to reduce duplicated images and event listeners.
