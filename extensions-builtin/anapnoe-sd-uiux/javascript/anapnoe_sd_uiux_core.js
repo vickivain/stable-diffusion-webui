@@ -855,10 +855,12 @@ function initDefaultComponents(content_div) {
 		//console.log(txt, pid)
 		if (txt && pid) {				
 			document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
-				/* console.log(elm.innerHTML, txt) */
+				console.log(elm.innerHTML, txt);
+				/*
 				if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
 					elm.click();
 				}
+				*/
 			});
 		}
 

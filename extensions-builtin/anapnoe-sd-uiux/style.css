@@ -3411,6 +3411,9 @@ span.settings-category {
     -webkit-mask-image: url(./html/svg/clipboard-fill.svg);
 }
 
+.token_counter * {
+    display: block !important;
+}
 
 @-webkit-keyframes fade-out {
     0% {
