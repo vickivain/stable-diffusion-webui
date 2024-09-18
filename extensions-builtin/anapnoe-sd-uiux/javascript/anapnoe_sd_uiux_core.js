@@ -15,22 +15,21 @@ window.all_gallery_buttons = function(){
 	return visibleGalleryButtons;
 }
 
-window.extraNetworksSearchButton = function(tabs_id, e) {
-	var  button = e.target;
-	const attr = e.target.parentElement.parentElement.getAttribute("search-field"); 
-    var searchTextarea = gradioApp().querySelector(attr);
-	//console.log(button, searchTextarea)
-	var text = button.classList.contains("search-all") ? "" : button.textContent.trim();
-	searchTextarea.value = text;
-	window.updateInput(searchTextarea);
+window.extraNetworksSearchButton = function(tabname, extra_networks_tabname, event) {
+	var attr = event.target.parentElement.parentElement.getAttribute("search-field"); 
+	var searchTextarea = gradioApp().querySelector(attr);
+    var button = event.target;
+    var text = button.classList.contains("search-all") ? "" : button.textContent.trim();
+
+    searchTextarea.value = text;
+    window.updateInput(searchTextarea);
 }
 
 window.imageMaskResize = function(){
 	// override function empty we dont need any fix here
 }
 
-window.extraNetworksEditUserMetadata = function(event, tabname, extraPage, cardName) {
-    //var id = tabname + '_' + extraPage + '_edit_user_metadata';
+window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
 	var tid = 'txt2img_' + extraPage + '_edit_user_metadata';
     var editor = extraPageUserMetadataEditors[tid];
     if (!editor) {
@@ -40,15 +39,12 @@ window.extraNetworksEditUserMetadata = function(event, tabname, extraPage, cardN
         editor.button = gradioApp().querySelector("#" + tid + "_button");
         extraPageUserMetadataEditors[tid] = editor;
     }
-
+    var cardName = event.target.parentElement.parentElement.getAttribute("data-name");
     editor.nameTextarea.value = cardName;
     updateInput(editor.nameTextarea);
-
     editor.button.click();
-
     popup(editor.page);
-
-    //event.stopPropagation();
+    event.stopPropagation();
 }
 
 window.get_uiCurrentTabContent = function(){
@@ -853,16 +849,17 @@ function initDefaultComponents(content_div) {
 
 		const txt = el.querySelector('span')?.innerHTML.toLowerCase();
 		//console.log(txt, pid)
+		//window.alert(txt, pid);
+		/*
 		if (txt && pid) {				
 			document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
-				console.log(elm.innerHTML, txt);
-				/*
+				//console.log(elm.innerHTML, txt);
 				if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
 					elm.click();
 				}
-				*/
 			});
 		}
+		*/
 
         
 	}
