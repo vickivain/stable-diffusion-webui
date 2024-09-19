@@ -30,20 +30,20 @@ function rgbToHsl(rgb) {
 
     const hue = min === max ?
         0 :
-        r === max ? 
+        r === max ?
             (60 * (g - b) / diff + 360) % 360 :
-        g === max ?
-            60 * (b - r) / diff + 120 :
-            60 * (r - g) / diff + 240;
+            g === max ?
+                60 * (b - r) / diff + 120 :
+                60 * (r - g) / diff + 240;
 
     const lum = 0.5 * add;
     const sat = lum === 0 ?
         0 :
         lum === 1 ?
             1 :
-        lum <= 0.5 ?
-            diff / add :
-            diff / (2 - add);
+            lum <= 0.5 ?
+                diff / add :
+                diff / (2 - add);
 
     return [
         Math.round(hue),
