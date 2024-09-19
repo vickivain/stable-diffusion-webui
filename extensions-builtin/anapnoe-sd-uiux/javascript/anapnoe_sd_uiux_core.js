@@ -40,6 +40,9 @@ window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
         extraPageUserMetadataEditors[tid] = editor;
     }
     var cardName = event.target.parentElement.parentElement.getAttribute("data-name");
+	if(!cardName){
+		cardName = event.target.parentElement.parentElement.parentElement.querySelector('.tree-list-item-label').innerHTML.trim();
+	}
     editor.nameTextarea.value = cardName;
     updateInput(editor.nameTextarea);
     editor.button.click();
@@ -984,28 +987,50 @@ function initDefaultComponents(content_div) {
 		if(adc){
 			el.addEventListener('click', (e) => {
 
-					if(el.className.indexOf("refresh-extra-networks") !== -1){						
+				if(el.className.indexOf("refresh-extra-networks") !== -1){						
 					const ctemp = el.closest(".template");
 					const ckey = ctemp?.getAttribute("key") || "txt2img";
-					//console.log(ckey);
-					setTimeout(() => {
-						const tempnet = document.querySelector(`#txt2img_temp_tabitem #${ckey}_cards`);
-						if(tempnet){
-							ctemp.querySelector(".extra-network-cards")?.remove();
-							ctemp.querySelector(".extra-network-subdirs")?.remove();
-							ctemp.querySelectorAll(`.portal`).forEach((el, index, array) => {
-								setAttrSelector(el, ctemp, 0, index, array.length);
-							});
-							updateExtraNetworksCards(ctemp);
+
+					const cpane = document.querySelector(`#${ckey}_pane > div`);
+					const elementsToAppend = [
+						document.querySelector(`#${ckey}_dirs`),
+						document.querySelector(`#${ckey}_tree`),
+						document.querySelector(`#${ckey}_cards`)
+					];
+
+					elementsToAppend.forEach(element => {
+						if (element) {
+							element.querySelectorAll("[data-apply]").forEach((ca) => {
+								const data_apply = ca.getAttribute("data-apply");
+								ca.setAttribute("onClick", data_apply);			
+								ca.removeAttribute("data-apply");		
+							})
+							cpane.append(element);
 						}
+					});
+
+					const btn_refresh_internal = document.querySelector(`#${ckey}_extra_refresh_internal`);
+					btn_refresh_internal.dispatchEvent(new Event("click"));
+
+					setTimeout(() => {
+
+						const asd = document.querySelector(`#${ckey}_aside_split`);
+						asd.querySelectorAll(`.portal`).forEach((elm, index, array) => {
+							setAttrSelector(elm, asd, 0, index, array.length);
+						});
+
+						//setupExtraNetworksForTab('txt2img');
+						
+						//updateExtraNetworksCards(asd);
+
 					}, 1000);
 					
 				}
 
 				//}else{
-					document.querySelectorAll(adc).forEach((el) => {
-						el.click();
-					})	
+					//document.querySelectorAll(adc).forEach((el) => {
+						//el.click();
+					//})	
 				//}
 			})
 		}
