@@ -373,8 +373,8 @@ onUiLoaded(async() => {
             if (activeTab && activeTab !== "img2img") {
                 const img = targetElement.querySelector(`${elemId} img`);
 
-                if (img && img.style.display !== "none") {
-                    img.style.display = "none";
+                if (img && img.style.display !== "hidden") {
+                    /*img.style.display = "none";*/
                     img.style.visibility = "hidden";
                 }
             }
