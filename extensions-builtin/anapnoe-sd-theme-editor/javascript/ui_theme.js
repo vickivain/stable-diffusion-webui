@@ -47,7 +47,12 @@ function rgbToHsl(rgb) {
             ? diff / add
             : diff / (2 - add);
 
-    return [Math.round(hue), Math.round(sat * 100), Math.round(lum * 100), rgb[3] || 1];
+    return [
+        Math.round(hue),
+        Math.round(sat * 100),
+        Math.round(lum * 100),
+        rgb[3] || 1,
+    ];
 }
 
 function hexToHsl(color) {
@@ -63,9 +68,11 @@ function hslToHex(h, s, l) {
     const f = (n) => {
         const k = (n + h / 30) % 12;
         const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return Math.round(255 * Math.max(0, Math.min(color, 1)))
-            .toString(16)
-            .padStart(2, "0");
+        return (
+            Math.round(255 * Math.max(0, Math.min(color, 1)))
+                .toString(16)
+                .padStart(2, "0")
+        );
     };
 
     return `#${f(0)}${f(8)}${f(4)}`;
@@ -115,7 +122,8 @@ const styleobj = {};
 const hslobj = {};
 let isColorsInv;
 
-const toHSLArray = (hslStr) => hslStr.match(/\d+/g).map(Number);
+const toHSLArray = (hslStr) =>
+    hslStr.match(/\d+/g).map(Number);
 
 function offsetColorsHSV(ohsl) {
     let inner_styles = "";
@@ -142,9 +150,8 @@ function offsetColorsHSV(ohsl) {
                     if (isColorsInv) {
                         const c = toHSLArray(keyVal);
                         const _hex = hslToHex(c[0], c[1], c[2]);
-                        keyVal = invertColor(_hex);
-                        styleobj[key] = keyVal;
-                        hsl = rgbToHsl(hexToRgb(keyVal));
+                        styleobj[key] = invertColor(_hex);
+                        hsl = rgbToHsl(hexToRgb(styleobj[key]));
                     } else {
                         hsl = toHSLArray(keyVal);
                     }
@@ -167,8 +174,8 @@ function offsetColorsHSV(ohsl) {
     isColorsInv = false;
     const preview_styles = document.body.querySelector("#preview-styles");
     preview_styles.innerHTML = `:root {${inner_styles}}`;
-    preview_styles.innerHTML +=
-        `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
+    preview_styles.innerHTML += `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
+    
     const vars_textarea = document.body.querySelector("#theme_vars textarea");
     vars_textarea.value = inner_styles;
     window.updateInput(vars_textarea);
@@ -196,14 +203,12 @@ function updateTheme(vars) {
 
     if (preview_styles) {
         preview_styles.innerHTML = `:root {${inner_styles}}`;
-        preview_styles.innerHTML +=
-            `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
+        preview_styles.innerHTML += `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
     } else {
         const style = document.createElement("style");
         style.id = "preview-styles";
         style.innerHTML = `:root {${inner_styles}}`;
-        style.innerHTML +=
-            `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
+        style.innerHTML += `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
         document.body.appendChild(style);
     }
 
@@ -227,8 +232,7 @@ function initTheme(styles) {
     const css_textarea = document.body.querySelector("#theme_css textarea");
     vars_textarea.value = init_css_vars;
     const additional_styles = css_styles[1] !== undefined ? css_styles[1] : "";
-    css_textarea.value =
-        `/*BREAKPOINT_CSS_CONTENT*/${additional_styles}/*BREAKPOINT_CSS_CONTENT*/`;
+    css_textarea.value = `/*BREAKPOINT_CSS_CONTENT*/${additional_styles}/*BREAKPOINT_CSS_CONTENT*/`;
     updateTheme(init_vars);
 
     const preview_styles = document.body.querySelector("#preview-styles");
@@ -263,8 +267,7 @@ function initTheme(styles) {
 
                     vars_textarea.value = inner_styles;
                     preview_styles.innerHTML = `:root {${inner_styles}}`;
-                    preview_styles.innerHTML +=
-                        `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
+                    preview_styles.innerHTML += `@media only screen and (max-width: 860px) {:root{--ae-outside-gap-size: var(--ae-mobile-outside-gap-size);--ae-inside-padding-size: var(--ae-mobile-inside-padding-size);}}`;
 
                     window.updateInput(vars_textarea);
                     offsetColorsHSV(hsloffset);
@@ -362,8 +365,10 @@ function observeGradioApp() {
 
     observer.observe(gradioApp(), {
         childList: true,
-        subtree: true
+        subtree: true,
     });
 }
 
 document.addEventListener("DOMContentLoaded", observeGradioApp);
+
+// Ensure new line at end of file
