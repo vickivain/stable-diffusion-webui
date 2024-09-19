@@ -1028,9 +1028,9 @@ function initDefaultComponents(content_div) {
 				}
 
 				//}else{
-					//document.querySelectorAll(adc).forEach((el) => {
-						//el.click();
-					//})	
+					document.querySelectorAll(adc).forEach((el) => {
+						el.click();
+					})	
 				//}
 			})
 		}

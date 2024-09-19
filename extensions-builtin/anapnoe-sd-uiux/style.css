@@ -3415,6 +3415,14 @@ span.settings-category {
     display: block !important;
 }
 
+#accordions-extras > div > div {
+    padding: 0;
+    outline: 0;
+}
+#accordions-extras > div > div:first-child {
+    display:none;
+}
+
 @-webkit-keyframes fade-out {
     0% {
         opacity: 1;
