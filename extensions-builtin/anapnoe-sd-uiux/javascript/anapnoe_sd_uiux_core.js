@@ -212,14 +212,22 @@ function setAttrSelector(parent_elem, content_div, count, index, length) {
 		total += 1;
 		console.log("register | Ref", index, sp, s);
 		const d = parent_elem.getAttribute('droppable');
+		const adx = parent_elem.getAttribute('append-index');
+
 
 		if (d) {
 			const childs = Array.from(parent_elem.children);
 			//console.log("droppable", target_elem, parent_elem, childs);
 			childs.forEach((c) => {
 				if (c !== target_elem) {
-					if (target_elem.className.indexOf('gradio-accordion') !== -1) {
-						target_elem.children[2].append(c);
+					if (target_elem.className.indexOf('gradio-accordion') !== -1) {						
+						if(adx){
+							let idx = parseInt(adx, 10);
+							let ebefore = target_elem.children[2].children[idx];
+							target_elem.children[2].insertBefore(c, ebefore);
+						}else{
+							target_elem.children[2].append(c);
+						}
 					} else {
 						target_elem.append(c);
 					}
