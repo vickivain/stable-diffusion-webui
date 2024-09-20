@@ -3286,6 +3286,11 @@ input[type=checkbox]:checked:after {
     display: flex;
     align-items: center;
 }
+
+.gradio-accordion .label-wrap:not(.open) > span.icon{
+    transform: rotate(90deg);
+}
+
 .gradio-checkbox > div.mask-icon{
     margin: 0;
 }
@@ -3411,6 +3416,17 @@ span.settings-category {
     -webkit-mask-image: url(./html/svg/clipboard-fill.svg);
 }
 
+.token_counter * {
+    display: block !important;
+}
+
+#accordions-extras > div > div {
+    padding: 0;
+    outline: 0;
+}
+#accordions-extras > div > div:first-child {
+    display:none;
+}
 
 @-webkit-keyframes fade-out {
     0% {
