@@ -4,14 +4,20 @@ import gradio as gr
 import modules.scripts as scripts
 from modules import script_callbacks
 
-basedir = scripts.basedir() 
+basedir = scripts.basedir()
 webui_dir = Path(basedir).parents[1]
 
-themes_folder = os.path.join(basedir, "themes") 
+themes_folder = os.path.join(basedir, "themes")
 webui_style_path = os.path.join(webui_dir, "user.css")
 
-def get_files(folder, file_filter=[], split=False):
-    file_list = [file_name if not split else os.path.splitext(file_name)[0] for file_name in os.listdir(folder) if os.path.isfile(os.path.join(folder, file_name)) and file_name not in file_filter] 
+def get_files(folder, file_filter=None, split=False):
+    if file_filter is None:
+        file_filter = []
+    file_list = [
+        file_name if not split else os.path.splitext(file_name)[0] 
+        for file_name in os.listdir(folder) 
+        if os.path.isfile(os.path.join(folder, file_name)) and file_name not in file_filter
+    ]
     return file_list
 
 def on_ui_tabs():
@@ -19,16 +25,22 @@ def on_ui_tabs():
         with gr.Row():
             with gr.Column():
                 with gr.Row():
-                    themes_dropdown = gr.Dropdown(label="Themes", elem_id="themes_drop_down", interactive=True, choices=get_files(themes_folder, [".css", ".txt"]), type="value")
+                    themes_dropdown = gr.Dropdown(
+                        label="Themes",
+                        elem_id="themes_drop_down",
+                        interactive=True,
+                        choices=get_files(themes_folder, [".css", ".txt"]),
+                        type="value"
+                    )
                     save_as_filename = gr.Text(label="Save / Save as")
                 with gr.Row():
-                    reset_button = gr.Button(elem_id="theme_reset_btn", value="Reset", variant="primary")
+                    gr.Button(elem_id="theme_reset_btn", value="Reset", variant="primary")  # Removed unused variable
                     save_button = gr.Button(value="Save", variant="primary")
 
         with gr.Row(elem_id="theme_hidden"):
             vars_text = gr.Textbox(label="Vars", elem_id="theme_vars", show_label=True, lines=7, interactive=False, visible=True)
             css_text = gr.Textbox(label="Css", elem_id="theme_css", show_label=True, lines=7, interactive=False, visible=True)
-       
+
         with gr.Accordion(label="Theme Color adjustments", open=True):
             with gr.Row():
                 with gr.Column(elem_id="ui_theme_hsv"):
@@ -53,7 +65,7 @@ def on_ui_tabs():
                 gr.Slider(elem_id="--ae-border-radius", label='Panel border radius', minimum=0, maximum=8, step=1)
                 gr.Slider(elem_id="--ae-border-size", label='Panel border size', minimum=0, maximum=4, step=1)
 
-            with gr.Accordion(label="Component", open=False):                   
+            with gr.Accordion(label="Component", open=False):
                 gr.Slider(elem_id="--ae-input-height", label='Component size', minimum=28, maximum=45, step=1)
                 gr.Slider(elem_id="--ae-input-slider-height", label='Slider height', minimum=0.1, maximum=1, step=0.1)
                 gr.Slider(elem_id="--ae-input-padding", label='Padding', minimum=0, maximum=10, step=1)
@@ -77,12 +89,10 @@ def on_ui_tabs():
                 gr.Slider(elem_id="--ae-group-border-size", label='Group border size', minimum=0, maximum=4, step=1)
                 gr.Slider(elem_id="--ae-group-gap", label='Group gap size', minimum=0, maximum=8, step=1)
 
-        def save_theme(vars_text, css_text, filename):           
-            style_data = ":root{" + vars_text + "}" + css_text          
-            with open(os.path.join(themes_folder, f"{filename}.css"), 'w', encoding="utf-8") as file:                
-                file.write(vars_text)
-            with open(webui_style_path, 'w', encoding="utf-8") as file:                
-                file.write(style_data)            
+        def save_theme(vars_text, css_text, filename):
+            style_data = ":root{" + vars_text + "}" + css_text
+            with open(os.path.join(themes_folder, f"{filename}.css"), 'w', encoding="utf-8") as file:
+                file.write(style_data)  # Updated to save complete data
             themes_dropdown.choices = get_files(themes_folder, [".css", ".txt"])
             return gr.update(choices=themes_dropdown.choices, value=f"{filename}.css")
  
