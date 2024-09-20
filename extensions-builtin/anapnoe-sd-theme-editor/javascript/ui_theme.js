@@ -129,43 +129,46 @@ function offsetColorsHSV(ohsl) {
     for (const key in styleobj) {
         let keyVal = styleobj[key];
 
-        if (keyVal.includes("#") || keyVal.includes("hsl")) {
-            const colcomp = document.body.querySelector(`#${key} input`);
+        if (key != "") {
 
-            if (colcomp) {
-                let hsl;
+            if (keyVal.includes("#") || keyVal.includes("hsl")) {
+                const colcomp = document.body.querySelector(`#${key} input`);
 
-                if (keyVal.includes("#")) {
-                    keyVal = keyVal.replace(/\s+/g, "");
+                if (colcomp) {
+                    let hsl;
 
-                    if (isColorsInv) {
-                        keyVal = invertColor(keyVal);
-                        styleobj[key] = keyVal;
-                    }
+                    if (keyVal.includes("#")) {
+                        keyVal = keyVal.replace(/\s+/g, "");
 
-                    hsl = rgbToHsl(hexToRgb(keyVal));
-                } else {
-                    if (isColorsInv) {
-                        const c = toHSLArray(keyVal);
-                        const _hex = hslToHex(c[0], c[1], c[2]);
-                        styleobj[key] = invertColor(_hex);
-                        hsl = rgbToHsl(hexToRgb(styleobj[key]));
+                        if (isColorsInv) {
+                            keyVal = invertColor(keyVal);
+                            styleobj[key] = keyVal;
+                        }
+
+                        hsl = rgbToHsl(hexToRgb(keyVal));
                     } else {
-                        hsl = toHSLArray(keyVal);
+                        if (isColorsInv) {
+                            const c = toHSLArray(keyVal);
+                            const _hex = hslToHex(c[0], c[1], c[2]);
+                            styleobj[key] = invertColor(_hex);
+                            hsl = rgbToHsl(hexToRgb(styleobj[key]));
+                        } else {
+                            hsl = toHSLArray(keyVal);
+                        }
                     }
+
+                    const h = (parseInt(hsl[0]) + parseInt(ohsl[0])) % 360;
+                    const s = Math.min(Math.max(parseInt(hsl[1]) + parseInt(ohsl[1]), 0), 100);
+                    const l = Math.min(Math.max(parseInt(hsl[2]) + parseInt(ohsl[2]), 0), 100);
+
+                    const hex = hslToHex(h, s, l);
+                    colcomp.value = hex;
+                    hslobj[key] = `hsl(${h}deg ${s}% ${l}%)`;
+                    inner_styles += `${key}:${hslobj[key]};`;
                 }
-
-                const h = (parseInt(hsl[0]) + parseInt(ohsl[0])) % 360;
-                const s = Math.min(Math.max(parseInt(hsl[1]) + parseInt(ohsl[1]), 0), 100);
-                const l = Math.min(Math.max(parseInt(hsl[2]) + parseInt(ohsl[2]), 0), 100);
-
-                const hex = hslToHex(h, s, l);
-                colcomp.value = hex;
-                hslobj[key] = `hsl(${h}deg ${s}% ${l}%)`;
-                inner_styles += `${key}:${hslobj[key]};`;
+            } else {
+                inner_styles += `${key}:${styleobj[key]};`;
             }
-        } else {
-            inner_styles += `${key}:${styleobj[key]};`;
         }
     }
 
@@ -229,6 +232,7 @@ function initTheme(styles) {
     const vars_textarea = document.body.querySelector("#theme_vars textarea");
     const css_textarea = document.body.querySelector("#theme_css textarea");
     vars_textarea.value = init_css_vars;
+    window.updateInput(vars_textarea);
     const additional_styles = css_styles[1] !== undefined ? css_styles[1] : "";
     css_textarea.value = `/*BREAKPOINT_CSS_CONTENT*/${additional_styles}/*BREAKPOINT_CSS_CONTENT*/`;
     updateTheme(init_vars);
@@ -291,6 +295,7 @@ function initTheme(styles) {
         if (init_css_vars !== vars_textarea.value) {
             clearInterval(intervalCheck);
             init_css_vars = vars_textarea.value.replace(/\n|\r/g, "");
+            init_css_vars = init_css_vars.split(":root{")[0];
             vars_textarea.value = init_css_vars;
             const vars = init_css_vars.split(";");
             updateTheme(vars);
