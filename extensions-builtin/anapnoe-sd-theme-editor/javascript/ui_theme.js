@@ -249,12 +249,12 @@ function initTheme(styles) {
                 let val = e.currentTarget.value;
                 if (e.currentTarget.type === "range" || e.currentTarget.type === "number") {
                     val += "px";
+                    styleobj[e.currentTarget.parentElement.id] = val;
                 }
                 if (e.currentTarget.type === "color") {
                     val = e.currentTarget.value;
+                    styleobj[e.currentTarget.parentElement.parentElement.id] = val;
                 }
-
-                styleobj[e.currentTarget.parentElement.id] = val;
 
                 if (intervalChange != null) clearInterval(intervalChange);
                 intervalChange = setTimeout(() => {
