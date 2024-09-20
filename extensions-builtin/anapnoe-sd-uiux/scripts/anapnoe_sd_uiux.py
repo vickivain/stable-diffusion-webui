@@ -1,9 +1,6 @@
 import gradio as gr
-import modules.scripts as scripts
 from modules import script_callbacks, shared
-from modules.options import options_section, OptionInfo
-
-categories.register_category("anapnoe", "Anapnoe")
+from modules.options import options_section
 
 mapping = [
     (info.infotext, k) for k, info in shared.opts.data_labels.items() if info.infotext
