@@ -1,3 +1,8 @@
+const extraPageUserMetadataEditors = {};
+const anapnoe_app_id = "#anapnoe_app"; // Example ID. Ensure this ID exists in your HTML.
+const anapnoe_app = document.querySelector(anapnoe_app_id); // Initialize anapnoe_app
+const popup_trigger = document.querySelector("#popup_trigger_id"); // Replace with your actual element ID
+
 window.all_gallery_buttons = function() {
     //orig_all_gallery_buttons();
     var tabitem = gradioApp().querySelector('#main-nav-bar button.active')?.getAttribute('tabitemid');
@@ -91,7 +96,6 @@ let total = 0;
 let active_main_tab;// = document.querySelector("#tab_txt2img");//null
 let loggerUiUx;
 const split_instances = [];
-const anapnoe_app_id = "#anapnoe_app";
 
 function detectMobile() {
     return ((window.innerWidth <= 768));//&& ( window.innerHeight <= 600 ) );
