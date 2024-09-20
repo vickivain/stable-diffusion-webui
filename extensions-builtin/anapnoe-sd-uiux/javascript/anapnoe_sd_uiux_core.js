@@ -1,8 +1,5 @@
-const extraPageUserMetadataEditors = {};
 const anapnoe_app_id = "#anapnoe_app";
 const anapnoe_app = document.querySelector(anapnoe_app_id);
-const popup_trigger = document.querySelector("#popup_trigger_id");
-let Split;
 
 window.all_gallery_buttons = function() {
     //orig_all_gallery_buttons();
@@ -36,7 +33,7 @@ window.imageMaskResize = function() {
 
 window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
     var tid = 'txt2img_' + extraPage + '_edit_user_metadata';
-    var editor = extraPageUserMetadataEditors[tid];
+    var editor = window.extraPageUserMetadataEditors[tid];
     if (!editor) {
         editor = {};
         editor.page = gradioApp().getElementById(tid);
@@ -478,6 +475,7 @@ function updateExtraNetworksCards(el) {
 
             if (ctarget.className.indexOf("card-button") !== -1) {
                 data_apply = data_apply?.replaceAll("img2img", "txt2img");
+                /* eslint-disable no-undef */
                 popup_trigger.click();
                 testpopup();
             }
@@ -487,6 +485,7 @@ function updateExtraNetworksCards(el) {
 
     document.querySelectorAll("#txt2img_styles_edit_button, #img2img_styles_edit_button").forEach((elm) => {
         elm.addEventListener("click", function(e) {
+            /* eslint-disable no-undef */
             popup_trigger.click();
             testpopup();
         });
@@ -763,6 +762,7 @@ function initDefaultComponents(content_div) {
 
         console.log("Split component", ids, isize, msize, dir, gutter);
 
+        /* eslint-disable no-undef */
         split_instances[id] = Split(ids, {
             sizes: isize,
             minSize: msize,
