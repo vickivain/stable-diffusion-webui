@@ -3286,6 +3286,11 @@ input[type=checkbox]:checked:after {
     display: flex;
     align-items: center;
 }
+
+.gradio-accordion .label-wrap:not(.open) > span.icon{
+    transform: rotate(90deg);
+}
+
 .gradio-checkbox > div.mask-icon{
     margin: 0;
 }
