@@ -1,5 +1,4 @@
 const anapnoe_app_id = "#anapnoe_app";
-const anapnoe_app = document.querySelector(anapnoe_app_id);
 
 window.all_gallery_buttons = function() {
     //orig_all_gallery_buttons();
@@ -110,6 +109,7 @@ function debounce(func){
 */
 
 function applyDefaultLayout(isMobile) {
+    const anapnoe_app = document.querySelector(anapnoe_app_id);
     anapnoe_app.querySelectorAll("[mobile]").forEach((tabItem) => {
         //console.log(tabItem);
         if (isMobile) {
@@ -146,6 +146,7 @@ function applyDefaultLayout(isMobile) {
 }
 
 function switchMobile() {
+    const anapnoe_app = document.querySelector(anapnoe_app_id);
     const optslayout = window.opts.uiux_default_layout;
     //console.log(optslayout);
     anapnoe_app.classList.add(`default-${optslayout.toLowerCase()}`);
@@ -1055,6 +1056,7 @@ function initDefaultComponents(content_div) {
 
 function uiuxOptionSettings() {
 
+    const anapnoe_app = document.querySelector(anapnoe_app_id);
     // sd max resolution output
     function sdMaxOutputResolution(value) {
         gradioApp().querySelectorAll('[id$="2img_width"] input,[id$="2img_height"] input').forEach((elem) => {
@@ -1190,8 +1192,6 @@ function uiuxOptionSettings() {
             attributes: true
         });
     });
-
-
 
 
     function uiux_no_slider_layout(value) {
@@ -1754,10 +1754,6 @@ function setupLogger() {
 function observeGradioInit() {
     const observer = new MutationObserver(() => {
         const block = gradioApp().querySelector("#tab_anapnoe_sd_uiux_core");
-        //const t = gradioApp().querySelector("#txt2img_textual_inversion_cards_html .card:last-child");
-        //const c = gradioApp().querySelector("#txt2img_checkpoints_cards_html .card:last-child");
-        //const h = gradioApp().querySelector("#txt2img_hypernetworks_cards_html > div:first-child");
-        //const l = gradioApp().querySelector("#txt2img_lora_cards_html .card:last-child");
         if (block) {
             //if (block && t && c && h && l) {
             if (window.opts && Object.keys(window.opts).length) {
@@ -1772,11 +1768,6 @@ function observeGradioInit() {
     });
     observer.observe(gradioApp(), {childList: true, subtree: true});
 }
-
-
-/* onUiLoaded(function() {
-   setupLogger();
-});  */
 
 document.addEventListener("DOMContentLoaded", () => {
     observeGradioInit();
