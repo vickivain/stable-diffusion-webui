@@ -1,7 +1,9 @@
 /*! Split.js - v1.6.5 */
 
 (function(global, factory) {
+    /* eslint-disable no-undef */
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    /* eslint-disable no-undef */
         typeof define === 'function' && define.amd ? define(factory) :
             (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Split = factory());
 }(this, (function() {
