@@ -33,7 +33,8 @@ window.imageMaskResize = function() {
 
 window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
     var tid = 'txt2img_' + extraPage + '_edit_user_metadata';
-    var editor = window.extraPageUserMetadataEditors[tid];
+    /* eslint-disable no-undef */
+    var editor = extraPageUserMetadataEditors[tid];
     if (!editor) {
         editor = {};
         editor.page = gradioApp().getElementById(tid);
