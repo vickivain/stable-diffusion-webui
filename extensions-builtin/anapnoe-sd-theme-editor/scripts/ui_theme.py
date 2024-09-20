@@ -14,8 +14,8 @@ def get_files(folder, file_filter=None, split=False):
     if file_filter is None:
         file_filter = []
     file_list = [
-        file_name if not split else os.path.splitext(file_name)[0] 
-        for file_name in os.listdir(folder) 
+        file_name if not split else os.path.splitext(file_name)[0]
+        for file_name in os.listdir(folder)
         if os.path.isfile(os.path.join(folder, file_name)) and file_name not in file_filter
     ]
     return file_list
@@ -95,19 +95,19 @@ def on_ui_tabs():
                 file.write(style_data)  # Updated to save complete data
             themes_dropdown.choices = get_files(themes_folder, [".css", ".txt"])
             return gr.update(choices=themes_dropdown.choices, value=f"{filename}.css")
- 
-        def open_theme(filename):                           
+
+        def open_theme(filename):
             with open(os.path.join(themes_folder, filename), 'r') as file:
                 vars_text = file.read()
             no_ext = filename.rsplit('.', 1)[0]
             return [vars_text, no_ext]
-        
+
         save_button.click(
             fn=save_theme,
             inputs=[vars_text, css_text, save_as_filename],
             outputs=themes_dropdown
         )
-        
+
         themes_dropdown.change(
             fn=open_theme,
             inputs=[themes_dropdown],
