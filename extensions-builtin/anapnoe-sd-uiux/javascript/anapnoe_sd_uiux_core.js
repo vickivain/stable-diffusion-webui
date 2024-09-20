@@ -1477,18 +1477,18 @@ function setupOnLoadResources() {
     content_div.appendChild(script);
     setupAdditionalStylesForExtensions();
 
-	const iibframe = document.querySelector("#infinite_image_browsing_container_wrapper > iframe");
-	if(iibframe){
-		var css = document.querySelector('[rel="stylesheet"][href*="user"]');
-		var rootRules = Array.from(css.sheet.cssRules).filter(function(cssRule) {
-			return (cssRule instanceof CSSStyleRule && cssRule.selectorText === ":root");
-		});
-		var rootCssText = rootRules[0].cssText; 
+    const iibframe = document.querySelector("#infinite_image_browsing_container_wrapper > iframe");
+    if (iibframe) {
+        var css = document.querySelector('[rel="stylesheet"][href*="user"]');
+        var rootRules = Array.from(css.sheet.cssRules).filter(function(cssRule) {
+            return (cssRule instanceof CSSStyleRule && cssRule.selectorText === ":root");
+        });
+        var rootCssText = rootRules[0].cssText;
 
-		iibframe.addEventListener("load", ev => {
-			const new_style_element = document.createElement("style");
-			//getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
-			new_style_element.textContent = 
+        iibframe.addEventListener("load", ev => {
+            const new_style_element = document.createElement("style");
+            //getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
+            new_style_element.textContent =
 			`
 			${rootCssText}
 			:root body {
@@ -1655,9 +1655,9 @@ function setupOnLoadResources() {
 
 			
 			`;
-			ev.target.contentDocument.head.appendChild(new_style_element);
-		});
-	}
+            ev.target.contentDocument.head.appendChild(new_style_element);
+        });
+    }
 
 }
 
