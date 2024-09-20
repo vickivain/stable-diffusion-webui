@@ -1,4 +1,3 @@
-//var orig_all_gallery_buttons = window.all_gallery_buttons;
 window.all_gallery_buttons = function () {
 	//orig_all_gallery_buttons();
 	var tabitem = gradioApp().querySelector('#main-nav-bar button.active')?.getAttribute('tabitemid');
@@ -99,11 +98,11 @@ function detectMobile() {
 }
 /* 
 function debounce(func){
-	var timer;
-	return function(event){
-	  if(timer) clearTimeout(timer);
-	  timer = setTimeout(func,100,event);
-	};
+ var timer;
+ return function(event){
+   if(timer) clearTimeout(timer);
+   timer = setTimeout(func,100,event);
+ };
 } 
 */
 
@@ -150,8 +149,8 @@ function switchMobile() {
 	if (optslayout === "Auto") {
 		/*  
 		window.addEventListener("resize", debounce(function(e){
-			const isMobile = detectMobile();
-			applyDefaultLayout(isMobile);
+		 const isMobile = detectMobile();
+		 applyDefaultLayout(isMobile);
 		})); 
 		*/
 		window.addEventListener('resize', function (event) {
@@ -273,27 +272,27 @@ function testpopup() {
 		/*
 		const childs = Array.from(el.children);
 		childs.forEach((c) => {
-			const ac = c.getAttribute("meta-Id");	
-			if(ac){
-				if(ac === meta_id){
-					c.style.display = "";
-					el.style.display = "";										
-					
-				}else{
-					c.style.display = "none";
-					if(childs.length === 1){
-						el.style.display = "none";						
-					}
-				}
-			}else{
-				c.setAttribute("meta-id", meta_id);
-			}
+		 const ac = c.getAttribute("meta-Id"); 
+		 if(ac){
+		  if(ac === meta_id){
+		   c.style.display = "";
+		   el.style.display = "";          
+		   
+		  }else{
+		   c.style.display = "none";
+		   if(childs.length === 1){
+			el.style.display = "none";      
+		   }
+		  }
+		 }else{
+		  c.setAttribute("meta-id", meta_id);
+		 }
 		}); 
 		*/
 		setAttrSelector(el, content_div, 0, index, array.length);
 	});
 
-	/* 	
+	/*  
 	content_div.querySelectorAll(`.ae-popup .edit-user-metadata-buttons button`).forEach((el) => {
 	} 
 	*/
@@ -321,24 +320,24 @@ function createButtons4Extensions() {
 			//tab_openpose_editor
 			const temp = document.createElement('div');
 			temp.innerHTML = `
-			<button tabItemId="#split-app, #${cid}_tabitem" 
-			tabGroup="main_group" 
-			data-click="#tabs" 
-			onclick="mainTabs(this, '#${cid}')" 
-			class="xtabs-tab">
-			<!-- <div class="mask-icon icon-train"></div> -->
-			<div class="icon-letters">${nid.slice(0, 2)}</div>
-			<span>${nid}</span>
-			</button>`;
+   <button tabItemId="#split-app, #${cid}_tabitem" 
+   tabGroup="main_group" 
+   data-click="#tabs" 
+   onclick="mainTabs(this, '#${cid}')" 
+   class="xtabs-tab">
+   <!-- <div class="mask-icon icon-train"></div> -->
+   <div class="icon-letters">${nid.slice(0, 2)}</div>
+   <span>${nid}</span>
+   </button>`;
 			const btn = temp.firstElementChild;
 			other_extensions.append(btn);
 			//console.log(other_extensions, btn);
 
 			temp.innerHTML = `
-			<div id="${cid}_tabitem" class="xtabs-item other">
-				<div data-parent-selector="gradio-app" data-selector="#${cid} > div" class="portal">
-				</div>
-		  	</div>`;
+   <div id="${cid}_tabitem" class="xtabs-item other">
+    <div data-parent-selector="gradio-app" data-selector="#${cid} > div" class="portal">
+    </div>
+     </div>`;
 
 			const view = temp.firstElementChild;
 			//console.log(other_views, view);
@@ -358,7 +357,7 @@ function setupExtraNetworksSearchSort() {
 		gradioApp().querySelectorAll(cards).forEach(function (elem) {
 			//const text = elem.querySelector(".search_term").textContent;//elem.getAttribute("data-path").toLowerCase().split("\\").join("/");
 			//const text = elem.querySelector('.name').textContent.toLowerCase() + " " + elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();
-			const text = elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();			
+			const text = elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();   
 			let visible = text.indexOf(search_term) != -1;
 			if (search_term.length < 3) {
 				visible = true;
@@ -521,7 +520,7 @@ function showContributors() {
 	const temp = document.createElement('div');
 	temp.id = 'contributors_grid';
 	temp.innerHTML = `Kindly allow us a moment to retrieve the contributors. 
-	We're grateful for the many individuals who have generously put their time and effort to make this possible.`;
+ We're grateful for the many individuals who have generously put their time and effort to make this possible.`;
 	contributors_view.append(temp);
 
 	contributors_btn.addEventListener('click', function (e) {
@@ -537,12 +536,12 @@ function showContributors() {
 					const html_url = result[i].html_url;
 					const avatar_url = result[i].avatar_url;
 					temp.innerHTML += `
-					<a href="${html_url}" target="_blank" rel="noopener noreferrer nofollow" class="contributor-button flexbox col">
-						<figure><img src="${avatar_url}" lazy="true"></figure>
-						<div class="contributor-name">
-							${login}
-						</div>
-					</a>`;
+     <a href="${html_url}" target="_blank" rel="noopener noreferrer nofollow" class="contributor-button flexbox col">
+      <figure><img src="${avatar_url}" lazy="true"></figure>
+      <div class="contributor-name">
+       ${login}
+      </div>
+     </a>`;
 				}
 			})
 		}
@@ -569,7 +568,7 @@ function onUiUxReady(content_div) {
 			content_div.querySelector("#img2img_checkpoints_cards_html")?.remove();
 			content_div.querySelector("#img2img_hypernetworks_cards_html")?.remove();
 			content_div.querySelector("#img2img_lora_cards_html")?.remove();
-
+		 
 			console.log("Remove element #img2img_textual_inversion_cards_html");
 			console.log("Remove element #img2img_checkpoints_cards_html");
 			console.log("Remove element #img2img_hypernetworks_cards_html");
@@ -637,49 +636,49 @@ function onUiUxReady(content_div) {
 			//not needed any more but i will use this in img2img inpaint roundtrip
 			/*
 			function copyCanvas(sourceId, destId) {
-
-				let sourceImage = document.querySelector(sourceId);
-				let destCanvas = document.querySelector(destId);
-
-				let destContext = destCanvas.getContext("2d");
-				
-				destContext.clearRect(0, 0, destCanvas.width, destCanvas.height);
-				destContext.drawImage(sourceImage, 0, 0, destCanvas.width, destCanvas.height);
-				
-				let imageData = destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
-				let data = imageData.data;
-				
-				for (var i = 0; i < data.length; i += 4) {
-					var alpha = data[i + 3];
-					data[i] = 255;
-					data[i + 1] = 255;
-					data[i + 2] = 255;
-					data[i + 3] = alpha;
-				}
-				
-				destContext.putImageData(imageData, 0, 0);
+		 
+			 let sourceImage = document.querySelector(sourceId);
+			 let destCanvas = document.querySelector(destId);
+		 
+			 let destContext = destCanvas.getContext("2d");
+			 
+			 destContext.clearRect(0, 0, destCanvas.width, destCanvas.height);
+			 destContext.drawImage(sourceImage, 0, 0, destCanvas.width, destCanvas.height);
+			 
+			 let imageData = destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
+			 let data = imageData.data;
+			 
+			 for (var i = 0; i < data.length; i += 4) {
+			  var alpha = data[i + 3];
+			  data[i] = 255;
+			  data[i + 1] = 255;
+			  data[i + 2] = 255;
+			  data[i + 3] = alpha;
+			 }
+			 
+			 destContext.putImageData(imageData, 0, 0);
 			}
-
+		 
 			window.addEventListener("keydown", function(event) {
-				if (event.key === "0") {
-					let source = "#txt2img_controlnet_ControlNet-0_input_image img";
-					let dest = "#txt2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
-					if(source && dest){
-						copyCanvas(source, dest);
-						console.log("copy to canvas inpaint");
-					}
-				}
-
-				if (event.key === "9") {
-					let source = "#img2img_controlnet_ControlNet-0_input_image img";
-					let dest = "#img2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
-					if(source && dest){
-						copyCanvas(source, dest);
-						console.log("copy to canvas inpaint");
-					}
-				}
-			
-			
+			 if (event.key === "0") {
+			  let source = "#txt2img_controlnet_ControlNet-0_input_image img";
+			  let dest = "#txt2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
+			  if(source && dest){
+			   copyCanvas(source, dest);
+			   console.log("copy to canvas inpaint");
+			  }
+			 }
+		 
+			 if (event.key === "9") {
+			  let source = "#img2img_controlnet_ControlNet-0_input_image img";
+			  let dest = "#img2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
+			  if(source && dest){
+			   copyCanvas(source, dest);
+			   console.log("copy to canvas inpaint");
+			  }
+			 }
+		    
+		    
 			});
 			*/
 
@@ -860,13 +859,13 @@ function initDefaultComponents(content_div) {
 		//console.log(txt, pid)
 		//window.alert(txt, pid);
 		/*
-		if (txt && pid) {				
-			document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
-				//console.log(elm.innerHTML, txt);
-				if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
-					elm.click();
-				}
-			});
+		if (txt && pid) {    
+		 document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
+		  //console.log(elm.innerHTML, txt);
+		  if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
+		   elm.click();
+		  }
+		 });
 		}
 		*/
 
@@ -1113,15 +1112,15 @@ function uiuxOptionSettings() {
 			token_value = token_value.replaceAll(" ", "");
 
 			/* if(token_name.indexOf("Model hash") != -1){
-				const info_label = gradioApp().querySelector("[id$='2img_override_settings'] label span");
-				info_label.innerHTML = "Override settings MDL: unknown";
-				for (let m=0; m<sdCheckpointModels.length; m++) {						
-					let m_str = sdCheckpointModels[m];					
-					if(m_str.indexOf(token_value) != -1 ){
-						info_label.innerHTML = "Override settings <i>MDL: " +  m_str.split("[")[0] + "</i>";
-						break;
-					}
-				}	
+			 const info_label = gradioApp().querySelector("[id$='2img_override_settings'] label span");
+			 info_label.innerHTML = "Override settings MDL: unknown";
+			 for (let m=0; m<sdCheckpointModels.length; m++) {      
+			  let m_str = sdCheckpointModels[m];     
+			  if(m_str.indexOf(token_value) != -1 ){
+			   info_label.innerHTML = "Override settings <i>MDL: " +  m_str.split("[")[0] + "</i>";
+			   break;
+			  }
+			 } 
 			} */
 
 			if (checked_overrides.indexOf(token_name) != -1) {
@@ -1139,9 +1138,9 @@ function uiuxOptionSettings() {
 	/*     
 	gradioApp().querySelectorAll("#pnginfo_send_buttons button, #paste").forEach(function (elem) {
 	  elem.addEventListener("click", function (e) {     
-		setTimeout(function () {
-			remove_overrides();
-		}, 500);
+	 setTimeout(function () {
+	  remove_overrides();
+	 }, 500);
 	  });
 	}); 
 	*/
@@ -1267,171 +1266,171 @@ function setupAdditionalStylesForExtensions() {
 			//getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
 			new_style_element.textContent =
 				`
-			${rootCssText}
-			:root body {
-				--zp-primary: var(--ae-primary-color)!important;
-				--zp-secondary: var(--ae-secondary-color)!important;
-				--zp-tertiary: var(--ae-secondary-color)!important;
-				--zp-primary-background: var(--ae-panel-bg-color)!important;
-				--zp-secondary-background: var(--ae-panel-bg-color)!important;
-				--zp-secondary-variant-background: var(--ae-input-bg-color)!important;
-				--zp-tertiary-background: var(--ae-input-bg-color)!important;
-				--zp-border: var(--ae-input-border-color)!important;
-				--zp-icon-bg: var(--ae-primary-color)!important;
-			}
-			#zanllp_dev_gradio_fe .ant-tabs-tabpane > .container .header + .ant-alert,
-			#zanllp_dev_gradio_fe .ant-tabs-tabpane > .container .header{
-				/*display:none!important;*/
-			}
-			#zanllp_dev_gradio_fe .ant-tabs-tabpane > .container .ant-radio-group{
-				display:none!important;
-			}
+   ${rootCssText}
+   :root body {
+    --zp-primary: var(--ae-primary-color)!important;
+    --zp-secondary: var(--ae-secondary-color)!important;
+    --zp-tertiary: var(--ae-secondary-color)!important;
+    --zp-primary-background: var(--ae-panel-bg-color)!important;
+    --zp-secondary-background: var(--ae-panel-bg-color)!important;
+    --zp-secondary-variant-background: var(--ae-input-bg-color)!important;
+    --zp-tertiary-background: var(--ae-input-bg-color)!important;
+    --zp-border: var(--ae-input-border-color)!important;
+    --zp-icon-bg: var(--ae-primary-color)!important;
+   }
+   #zanllp_dev_gradio_fe .ant-tabs-tabpane > .container .header + .ant-alert,
+   #zanllp_dev_gradio_fe .ant-tabs-tabpane > .container .header{
+    /*display:none!important;*/
+   }
+   #zanllp_dev_gradio_fe .ant-tabs-tabpane > .container .ant-radio-group{
+    display:none!important;
+   }
 
-			#zanllp_dev_gradio_fe .file.grid,{
-				border-radius:var(--ae-input-border-radius)!important;
-				margin:0 !important;
-			}
-			#zanllp_dev_gradio_fe .file.grid .ant-image, .file.grid .preview-icon-wrap {
-				border-radius: var(--ae-border-radius);
-				border: var(--ae-input-border-size) solid var(--ae-input-border-color);
-				background-color: var(--ae-input-bg-color);
-				border:0;
-			}
+   #zanllp_dev_gradio_fe .file.grid,{
+    border-radius:var(--ae-input-border-radius)!important;
+    margin:0 !important;
+   }
+   #zanllp_dev_gradio_fe .file.grid .ant-image, .file.grid .preview-icon-wrap {
+    border-radius: var(--ae-border-radius);
+    border: var(--ae-input-border-size) solid var(--ae-input-border-color);
+    background-color: var(--ae-input-bg-color);
+    border:0;
+   }
 
-			.ant-image-preview-wrap {
-				background-color: var(--ae-main-bg-color) !important;
-			}
+   .ant-image-preview-wrap {
+    background-color: var(--ae-main-bg-color) !important;
+   }
 
-			#zanllp_dev_gradio_fe .view .file-list,
-			#zanllp_dev_gradio_fe .view {
-				padding: 0;
-			}
+   #zanllp_dev_gradio_fe .view .file-list,
+   #zanllp_dev_gradio_fe .view {
+    padding: 0;
+   }
 
-			#zanllp_dev_gradio_fe .file.grid {
-				margin: 2px;
-				border-radius: var(--ae-border-radius);
-				background-color: var(--ae-input-bg-color) !important;
-				padding: 4px;
-				border: var(--ae-input-border-size) solid var(--ae-input-border-color);
-			}
+   #zanllp_dev_gradio_fe .file.grid {
+    margin: 2px;
+    border-radius: var(--ae-border-radius);
+    background-color: var(--ae-input-bg-color) !important;
+    padding: 4px;
+    border: var(--ae-input-border-size) solid var(--ae-input-border-color);
+   }
 
-			#zanllp_dev_gradio_fe .location-bar {
-				padding: 5px;
-				border-bottom: 0;
-			}
+   #zanllp_dev_gradio_fe .location-bar {
+    padding: 5px;
+    border-bottom: 0;
+   }
 
-			#zanllp_dev_gradio_fe a {
-				color: var(--ae-primary-color);
-			}
+   #zanllp_dev_gradio_fe a {
+    color: var(--ae-primary-color);
+   }
 
-			#zanllp_dev_gradio_fe .file.selected{
-				outline: 2px solid var(--ae-primary-color);
-			}
+   #zanllp_dev_gradio_fe .file.selected{
+    outline: 2px solid var(--ae-primary-color);
+   }
 
-			li.file.grid .ant-image, li.file.grid .preview-icon-wrap {
-				border: 0 !important;
-				border-radius:0 !important;
-			}
-			.file.grid .preview-icon-wrap {
-				margin-bottom:6px !important;
-			}
-			.ant-dropdown-menu {
-				background-color: var(--ae-input-bg-color) !important;
-				
-			}
-			.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
-				color: var(--ae-input-text-color) !important;
-			}
-			.ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
-				background-color: var(--ae-primary-color) !important;
-				color: var(--ae-input-hover-text-color) !important;
-			}
-			.ant-btn:hover, .ant-btn:focus {
-				color: var(--ae-input-hover-text-color) !important;
-				border-color: transparent !important;
-				background: var(--ae-primary-color) !important;
-			}
+   li.file.grid .ant-image, li.file.grid .preview-icon-wrap {
+    border: 0 !important;
+    border-radius:0 !important;
+   }
+   .file.grid .preview-icon-wrap {
+    margin-bottom:6px !important;
+   }
+   .ant-dropdown-menu {
+    background-color: var(--ae-input-bg-color) !important;
+    
+   }
+   .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
+    color: var(--ae-input-text-color) !important;
+   }
+   .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+    background-color: var(--ae-primary-color) !important;
+    color: var(--ae-input-hover-text-color) !important;
+   }
+   .ant-btn:hover, .ant-btn:focus {
+    color: var(--ae-input-hover-text-color) !important;
+    border-color: transparent !important;
+    background: var(--ae-primary-color) !important;
+   }
 
-			.ant-menu-item-divider {
-				border-color: var(--ae-input-border-color) !important;
-			}
-			.ant-tabs {
-				color: var(--ae-label-color) !important;
-			}
-			body ::-webkit-scrollbar-thumb:hover {
-				background-color: var(--ae-primary-color) !important;
-			}
-			.ant-btn,
-			.ant-tabs-card>.ant-tabs-nav .ant-tabs-tab, .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab {
-				border-radius: var(--ae-border-radius) !important;
-				background-color: var(--ae-input-bg-color) !important;
-				border: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
-				color: var(--ae-primary-color) !important;
-			}
+   .ant-menu-item-divider {
+    border-color: var(--ae-input-border-color) !important;
+   }
+   .ant-tabs {
+    color: var(--ae-label-color) !important;
+   }
+   body ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ae-primary-color) !important;
+   }
+   .ant-btn,
+   .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab, .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab {
+    border-radius: var(--ae-border-radius) !important;
+    background-color: var(--ae-input-bg-color) !important;
+    border: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
+    color: var(--ae-primary-color) !important;
+   }
 
-			.ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active, 
-			.ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab-active
-			{			
-				background-color: var(--ae-primary-color) !important;	
-				color: var(--ae-input-hover-text-color) !important;
-			}
+   .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active, 
+   .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab-active
+   {   
+    background-color: var(--ae-primary-color) !important; 
+    color: var(--ae-input-hover-text-color) !important;
+   }
 
-			.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-				color: var(--ae-primary-color) !important;		
-				text-shadow: 0 0 .25px  var(--ae-primary-color) !important;
-			}
-			.ant-tabs-ink-bar {
-				background: var(--ae-primary-color) !important;
-			}
-			.ant-tabs-tab:hover,
-			.ant-tabs-tab-btn:focus, .ant-tabs-tab-remove:focus, 
-			.ant-tabs-tab-btn:active, .ant-tabs-tab-remove:active {
-				color: var(--ae-primary-color) !important;
-			}
+   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--ae-primary-color) !important;  
+    text-shadow: 0 0 .25px  var(--ae-primary-color) !important;
+   }
+   .ant-tabs-ink-bar {
+    background: var(--ae-primary-color) !important;
+   }
+   .ant-tabs-tab:hover,
+   .ant-tabs-tab-btn:focus, .ant-tabs-tab-remove:focus, 
+   .ant-tabs-tab-btn:active, .ant-tabs-tab-remove:active {
+    color: var(--ae-primary-color) !important;
+   }
 
-			.ant-tabs-tab.ant-tabs-tab-with-remove.ant-tabs-tab-active .ant-tabs-tab-btn {
-				color: var(--ae-input-hover-text-color) !important;		
-			}
+   .ant-tabs-tab.ant-tabs-tab-with-remove.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--ae-input-hover-text-color) !important;  
+   }
 
-			.ant-tabs>.ant-tabs-nav .ant-tabs-nav-add, .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-add {
-				border-radius: var(--ae-border-radius) !important;
-				background-color: var(--ae-input-bg-color) !important;
-				border: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
-				color: var(--ae-primary-color) !important;
-			}
+   .ant-tabs>.ant-tabs-nav .ant-tabs-nav-add, .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-add {
+    border-radius: var(--ae-border-radius) !important;
+    background-color: var(--ae-input-bg-color) !important;
+    border: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
+    color: var(--ae-primary-color) !important;
+   }
 
-			.ant-tabs-top>.ant-tabs-nav:before, 
-			.ant-tabs-bottom>.ant-tabs-nav:before, 
-			.ant-tabs-top>div>.ant-tabs-nav:before, 
-			.ant-tabs-bottom>div>.ant-tabs-nav:before {
-				border-bottom: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
-			}
-			.feature-item .item:hover {
-				color: var(--ae-primary-color) !important;
-			}
-			.preview-switch>* {
-				color: var(--ae-primary-color) !important;
-				font-size: 2em !important;
-			}
-			.feature-item {
-				border-radius: var(--ae-border-radius) !important;
-				background-color: var(--ae-input-bg-color) !important;
-				border: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
-			}
-			.content{
-				grid-gap: var(--ae-gap-size) !important;
-				margin: var(--ae-gap-size) !important;
-				margin-left: 0 !important;
-			}
-			.container{
-				padding:0!important;
-			}
-			h1, h2, h3, h4, h5, h6 {
-				color: var(--ae-label-color) !important;
-			}
+   .ant-tabs-top>.ant-tabs-nav:before, 
+   .ant-tabs-bottom>.ant-tabs-nav:before, 
+   .ant-tabs-top>div>.ant-tabs-nav:before, 
+   .ant-tabs-bottom>div>.ant-tabs-nav:before {
+    border-bottom: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
+   }
+   .feature-item .item:hover {
+    color: var(--ae-primary-color) !important;
+   }
+   .preview-switch>* {
+    color: var(--ae-primary-color) !important;
+    font-size: 2em !important;
+   }
+   .feature-item {
+    border-radius: var(--ae-border-radius) !important;
+    background-color: var(--ae-input-bg-color) !important;
+    border: var(--ae-input-border-size) solid var(--ae-input-border-color) !important;
+   }
+   .content{
+    grid-gap: var(--ae-gap-size) !important;
+    margin: var(--ae-gap-size) !important;
+    margin-left: 0 !important;
+   }
+   .container{
+    padding:0!important;
+   }
+   h1, h2, h3, h4, h5, h6 {
+    color: var(--ae-label-color) !important;
+   }
 
-			
-			`;
+   
+   `;
 			ev.target.contentDocument.head.appendChild(new_style_element);
 		});
 	}
@@ -1479,9 +1478,9 @@ function removeStyleAssets() {
 	console.log("Remove element #img2img_lora_cards_html");
 
 	document.querySelectorAll(`
-	[rel="stylesheet"][href*="/assets/"], 
-	[rel="stylesheet"][href*="theme.css"],
-	[rel="stylesheet"][href*="file=style.css"]`
+ [rel="stylesheet"][href*="/assets/"], 
+ [rel="stylesheet"][href*="theme.css"],
+ [rel="stylesheet"][href*="file=style.css"]`
 	).forEach((c) => {
 		c.remove();
 		//loggerUiUx.innerHTML = `Remove stylesheets ${c.getAttribute("href")}`;
@@ -1628,14 +1627,14 @@ function setupLogger() {
 	const tempDiv = document.createElement('div');
 	tempDiv.id = "logger_screen";
 	tempDiv.style = `
-	position: fixed; 
-	inset: 0; 
-	background-color: black; 
-	z-index: 99999;
-	display: flex;
+ position: fixed; 
+ inset: 0; 
+ background-color: black; 
+ z-index: 99999;
+ display: flex;
     flex-direction: column;
-	overflow:auto;
-	`;
+ overflow:auto;
+ `;
 
 	loggerUiUx = document.createElement('div');
 	loggerUiUx.id = "logger";
@@ -1743,10 +1742,10 @@ function setupLogger() {
 function observeGradioInit() {
 	const observer = new MutationObserver(() => {
 		const block = gradioApp().querySelector("#tab_anapnoe_sd_uiux_core");
-		//const t = gradioApp().querySelector("#txt2img_textual_inversion_cards_html .card:last-child");	
-		//const c = gradioApp().querySelector("#txt2img_checkpoints_cards_html .card:last-child");	
-		//const h = gradioApp().querySelector("#txt2img_hypernetworks_cards_html > div:first-child");	
-		//const l = gradioApp().querySelector("#txt2img_lora_cards_html .card:last-child");	       
+		//const t = gradioApp().querySelector("#txt2img_textual_inversion_cards_html .card:last-child"); 
+		//const c = gradioApp().querySelector("#txt2img_checkpoints_cards_html .card:last-child"); 
+		//const h = gradioApp().querySelector("#txt2img_hypernetworks_cards_html > div:first-child"); 
+		//const l = gradioApp().querySelector("#txt2img_lora_cards_html .card:last-child");        
 		if (block) {
 			//if (block && t && c && h && l) {
 			if (window.opts && Object.keys(window.opts).length) {
@@ -1764,7 +1763,7 @@ function observeGradioInit() {
 
 
 /* onUiLoaded(function() {
-	  setupLogger();
+   setupLogger();
 });  */
 
 document.addEventListener("DOMContentLoaded", () => {
