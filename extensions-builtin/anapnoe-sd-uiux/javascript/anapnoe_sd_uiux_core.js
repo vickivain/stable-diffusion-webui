@@ -1,7 +1,8 @@
 const extraPageUserMetadataEditors = {};
-const anapnoe_app_id = "#anapnoe_app"; // Example ID. Ensure this ID exists in your HTML.
-const anapnoe_app = document.querySelector(anapnoe_app_id); // Initialize anapnoe_app
-const popup_trigger = document.querySelector("#popup_trigger_id"); // Replace with your actual element ID
+const anapnoe_app_id = "#anapnoe_app";
+const anapnoe_app = document.querySelector(anapnoe_app_id);
+const popup_trigger = document.querySelector("#popup_trigger_id");
+let Split;
 
 window.all_gallery_buttons = function() {
     //orig_all_gallery_buttons();
