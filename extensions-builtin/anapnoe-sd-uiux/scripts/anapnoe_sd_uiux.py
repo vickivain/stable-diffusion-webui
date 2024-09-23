@@ -37,6 +37,9 @@ shared.options_templates.update(
             "uiux_show_labels_tabs": shared.OptionInfo(
                 False, "Show labels for page tabs"
             ),
+            "uiux_hide_extra_info": shared.OptionInfo(
+                False, "Hide extra info for labels, checkboxes"
+            ),
             "uiux_ignore_overrides": shared.OptionInfo(
                 [],
                 "Ignore Overrides",

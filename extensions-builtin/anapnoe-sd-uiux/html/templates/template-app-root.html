@@ -54,7 +54,13 @@
                         </div>
                         <span>Train</span>
                     </button>
-					
+                    <button title="Deforum" id="deforum_nav" tabItemId="#split-app, #deforum_tabitem" tabGroup="main_group"
+                        data-click="#tabs" onclick="mainTabs(this, '#tab_deforum')" class="xtabs-tab hidden">
+                        <div class="mask-icon icon-deforum">
+                        </div>
+                        <span>Deforum</span>
+                    </button>
+                        
 					<!-- <button id="right_sidebar_button" tabItemId="#template-aside" tabGroup="main_group" class="xtabs-tab">
 					<div class="mask-icon icon-train"></div>
 					<span>Sidebar</span>
@@ -231,6 +237,21 @@
                                 </div>
                             </div>
 							</div>
+                            <div id="deforum_tabitem_parent">
+                                <div id="deforum_tabitem" class="xtabs-item  no-padding">
+                                    <div id="split-deforum" direction="horizontal" gutterSize="8" class="split">
+                                        <div title="Deforum params" id="def-c1" data-minSize="0" data-initSize="50"
+                                            class="split-container params">
+                                            <div id="template-deforum-params" class="template"></div>
+    
+                                        </div>
+                                        <div title="Deforum results" id="def-c2" data-minSize="0" data-initSize="50"
+                                            class="split-container">
+                                            <div id="template-deforum-results" class="template"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div title="Popup" id="popup_tabitem" class="xtabs-item ae-popup">
                                 <div class="ae-popup-inner">
                                     <div id="layout-popup-group" class="flexbox col">

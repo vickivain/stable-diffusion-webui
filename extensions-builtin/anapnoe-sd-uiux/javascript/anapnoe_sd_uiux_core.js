@@ -321,6 +321,7 @@ function createButtons4Extensions() {
 			cid !== "tab_settings" &&
 			cid !== "tab_extensions" &&
 			cid !== "tab_ui_theme" &&
+            cid !== "tab_deforum_interface" &&
 			cid !== "tab_anapnoe_dock" &&
 			cid !== "tab_anapnoe_sd_uiux_core") {
             //tab_openpose_editor
@@ -698,42 +699,51 @@ function onUiUxReady(content_div) {
 
 function setupGenerateObservers() {
 
-    const keys = ["#txt2img", "#img2img"];
+    const keys = ["#txt2img", "#img2img", "#deforum"];
     keys.forEach((key) => {
-
-        const tib = document.querySelector(key + '_interrupt');
         const tgb = document.querySelector(key + '_generate');
-        const ti = tib.closest('.portal');
-        const tg = tgb.closest('.ae-button');
-        const ts = document.querySelector(key + '_skip').closest('.portal');
-        const loop = document.querySelector(key + '_loop');
+        if (tgb) {
 
-        tib.addEventListener("click", function() {
-            loop.classList.add('stop');
-        });
+            document.querySelector(key + '_nav')?.classList.remove('hidden');
 
-        const gen_observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(m) {
+            const tib = document.querySelector(key + '_interrupt');
+            const ti = tib.closest('.portal');
+            const tg = tgb.closest('.ae-button');
+            const ts = document.querySelector(key + '_skip').closest('.portal');
+            const loop = document.querySelector(key + '_loop');
 
-                if (tib.style.display === 'none') {
-
-                    if (loop.className.indexOf('stop') !== -1 || loop.className.indexOf('active') === -1) {
-                        loop.classList.remove('stop');
-                        ti.classList.add('disable');
-                        ts.classList.add('disable');
-                        tg.classList.remove('active');
-                    } else if (loop.className.indexOf('active') !== -1) {
-                        tgb.click();
-                    }
-                } else {
-                    ti.classList.remove('disable');
-                    ts.classList.remove('disable');
-                    tg.classList.add('active');
-                }
+            tib.addEventListener("click", function() {
+                loop?.classList.add('stop');
             });
-        });
 
-        gen_observer.observe(tib, {attributes: true, attributeFilter: ['style']});
+            const gen_observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
+
+                    if (tib.style.display === 'none') {
+                        if (loop) {
+                            if (loop.className.indexOf('stop') !== -1 || loop.className.indexOf('active') === -1) {
+                                loop.classList.remove('stop');
+                                ti.classList.add('disable');
+                                ts?.classList.add('disable');
+                                tg.classList.remove('active');
+                            } else if (loop.className.indexOf('active') !== -1) {
+                                tgb.click();
+                            }
+                        } else {
+                            ti.classList.add('disable');
+                            tg.classList.remove('active');
+                        }
+                    } else {
+                        ti.classList.remove('disable');
+                        ts?.classList.remove('disable');
+                        tg.classList.add('active');
+                    }
+                });
+            });
+
+            gen_observer.observe(tib, {attributes: true, attributeFilter: ['style']});
+        }
+
     });
 
 }
@@ -1245,6 +1255,18 @@ function uiuxOptionSettings() {
         uiux_show_labels_tabs(e.target.checked, true);
     });
     uiux_show_labels_tabs(window.opts.uiux_show_labels_tabs);
+
+    function uiux_hide_extra_info(value) {
+        if (value) {
+            anapnoe_app.classList.add("no-extra-info");
+        } else {
+            anapnoe_app.classList.remove("no-extra-info");
+        }
+    }
+    gradioApp().querySelector("#setting_uiux_hide_extra_info input").addEventListener("click", function(e) {
+        uiux_hide_extra_info(e.target.checked, true);
+    });
+    uiux_hide_extra_info(window.opts.uiux_hide_extra_info);
 
 
     const comp_mobile_scale_range = gradioApp().querySelector("#setting_uiux_mobile_scale input[type=range]");
@@ -1893,7 +1915,7 @@ function setupLogger() {
         '\n', "╔═╗╔═╦╦═╗╔═╦═╦╦═╦═╗", '\n', "║╬╚╣║║║╬╚╣╬║║║║╬║╩╣", '\n', "╚══╩╩═╩══╣╔╩╩═╩═╩═╝", '\n', "─────────╚╝"
     );
 
-    console.log("Initialize Anapnoe UI/UX runtime engine version 0.0.1");
+    console.log("Initialize Anapnoe UI/UX runtime engine version 0.0.2");
     console.log(navigator.userAgent);
     const versions = gradioApp().querySelector(".versions");
     console.log(versions.innerHTML);
@@ -1907,6 +1929,7 @@ function setupLogger() {
     console.log("Aside labels: ", window.opts.uiux_show_labels_aside);
     console.log("Main labels: ", window.opts.uiux_show_labels_main);
     console.log("Tabs labels: ", window.opts.uiux_show_labels_tabs);
+    console.log("Hide extra info for labels, checkboxes: ", window.opts.uiux_hide_extra_info);
 
 
 
