@@ -849,6 +849,7 @@ label > span + div,
     padding: 0;
     position: relative;
     pointer-events: all;
+    flex-grow: 0;
 }
 
 *.gradio-dropdown label>span {

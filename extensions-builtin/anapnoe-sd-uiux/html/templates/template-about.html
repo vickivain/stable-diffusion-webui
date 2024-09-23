@@ -11,33 +11,25 @@
                     framework. These optimizations include:
                 </p>
                 <ul>
+
+                    <li>Removing redundant Checkpoints and "Extra Networks" (Textual Inversion, Lora, and Hypernetworks)
+                        from img2img to reduce duplicated images and event listeners.</li>
+                    <li>Eradicating inline event listeners from "Extra Networks" cards and action buttons.</li>
+                    <li>Applying an event delegation pattern to further streamline the code by consolidating event
+                        handling for "Extra Networks" cards and action buttons.</li>
                     <li>Replacing all default Gradio stylesheets in the DOM with an optimized version that promote
                         better visual coherence across components.</li>
                     <li>Eliminating inline styles and Svelte classes from the DOM to minimize clutter and improve
                         efficiency.</li>
-                    <li>Removing unnecessary "img2img Extra Networks" from the DOM to reduce duplicated images and event
-                        listeners.</li>
-                    <li>Eradicating inline event listeners from "txt2img Extra Networks" cards and action buttons.</li>
-                    <li>Applying an event delegation pattern to further streamline the code by consolidating event
-                        handling for "txt2img Extra Networks" cards and action buttons.</li>
                 </ul>
                 <p>
-                    Although the current optimizations provide significant benefits, they are still applied after the
-                    DOM has been loaded. A more effective approach would be to eliminate these unnecessary elements
-                    entirely from the backend. This is an area for improvement and will be address in the future
-                    releases of
-                    <a href="https://github.com/anapnoe/stable-diffusion-webui-ux" target="_blank">Stable Diffusion web
-                        UI-UX</a>.										
+                    The current optimizations significantly reduce DOM memory usage and improve loading speed.</br> 
+                    Nevertheless, there is still potential for further enhancements, which will be explored in 
+                upcoming releases of the <a href="https://github.com/anapnoe/stable-diffusion-webui-ux" target="_blank">Stable Diffusion Web UI-UX</a>.								
                 </p>
 				<!-- <br>
 				<img alt="Anapnoe UI-UX default theme" src="./file=extensions-builtin/anapnoe-sd-uiux/html/images/anapnoe-ui-ux.png" lazy="true"/>
-                -->
-				<p>				
-				Any extensions that replicate "Extra Network Cards" will not be officially supported. 
-				However, if certain extensions hold significant value for your workflow, you can initiate a discussion. 
-				If the community expresses interest and support for these optimizations, 
-				I will be willing to submit pull requests to the extension's author to implement them.
-				</p> 					
+                -->				
             </div>
         </div>
         <div class="flexbox col">
