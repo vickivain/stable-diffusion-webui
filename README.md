@@ -4,19 +4,22 @@ A bespoke, highly adaptable user interface for the Stable Diffusion, utilizing t
 ![](screenshot.png)
 
 ## Optimizations
+- Removing redundant Checkpoints and "Extra Networks" (Textual Inversion, Lora, and Hypernetworks) from img2img to reduce duplicated images and event listeners.
+- Eradicating inline event listeners from "Extra Networks" cards and action buttons.
+- Applying an event delegation pattern to further streamline the code by consolidating event handling for "Extra Networks" cards and action buttons.
 - Replacing all default Gradio stylesheets in the DOM with an optimized version that promote better visual coherence across components.
 - Eliminating inline styles and Svelte classes from the DOM to minimize clutter and improve efficiency.
-- Removing unnecessary "img2img Extra Networks" from the DOM to reduce duplicated images and event listeners.
-- Eradicating inline event listeners from "txt2img Extra Networks" cards and action buttons.
-- Applying an event delegation pattern to further streamline the code by consolidating event handling for "txt2img Extra Networks" cards and action buttons.
 
 ## Features webui-ux 
+- Mobile responsive design
 - A versatile micro-template engine that can be leveraged by other extensions
 - Customizable theme styles through a user-friendly configuration interface
 - Built-in console log
 - Option to ignore overrides
 - Support for tick marks on input range sliders for improved usability
-- Ability to switch between slider and number input modes, allowing users to enter values manually without displaying the slider.
+- Toggle option between slider and numeric input modes, ensuring a compact interface when numeric input mode is enabled
+- Seamless UI integration for the Infinite Image Browsing Extension
+- Seamless UI integration for the Deforum Extention
 
 ## Workspaces UI-UX (work in progress)
 The workspaces extension empowers you to create customized views and organize them according to your unique preferences. With an intuitive drag-and-drop interface, you can design workflows that are perfectly tailored to your specific requirements, giving you ultimate control over your work environment.
