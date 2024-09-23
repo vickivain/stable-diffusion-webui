@@ -505,7 +505,8 @@ def create_ui():
         extra_tabs = gr.Tabs(elem_id="img2img_extra_tabs", elem_classes=["extra-networks"])
         extra_tabs.__enter__()
 
-        with gr.Tab("Generation", id="img2img_generation") as img2img_generation_tab, ResizeHandleRow(equal_height=False):
+        #with gr.Tab("Generation", id="img2img_generation") as img2img_generation_tab, ResizeHandleRow(equal_height=False):
+        with gr.Tab("Generation", id="img2img_generation"), ResizeHandleRow(equal_height=False):
             with ExitStack() as stack:
                 if shared.opts.img2img_settings_accordion:
                     stack.enter_context(gr.Accordion("Open for Settings", open=False))
