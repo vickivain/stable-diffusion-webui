@@ -152,11 +152,11 @@ function switchMobile() {
     anapnoe_app.classList.add(`default-${optslayout.toLowerCase()}`);
     if (optslayout === "Auto") {
         /*
-		window.addEventListener("resize", debounce(function(e){
-		 const isMobile = detectMobile();
-		 applyDefaultLayout(isMobile);
-		}));
-		*/
+        window.addEventListener("resize", debounce(function(e){
+         const isMobile = detectMobile();
+         applyDefaultLayout(isMobile);
+        }));
+        */
         window.addEventListener('resize', function(event) {
             const isMobile = detectMobile();
             applyDefaultLayout(isMobile);
@@ -276,32 +276,32 @@ function testpopup() {
     //const meta_id = document.querySelector('.global-popup-inner > div')?.id;
     content_div.querySelectorAll(`.portal`).forEach((el, index, array) => {
         /*
-		const childs = Array.from(el.children);
-		childs.forEach((c) => {
-		 const ac = c.getAttribute("meta-Id");
-		 if(ac){
-		  if(ac === meta_id){
-		   c.style.display = "";
-		   el.style.display = "";
+        const childs = Array.from(el.children);
+        childs.forEach((c) => {
+         const ac = c.getAttribute("meta-Id");
+         if(ac){
+          if(ac === meta_id){
+           c.style.display = "";
+           el.style.display = "";
 
-		  }else{
-		   c.style.display = "none";
-		   if(childs.length === 1){
-			el.style.display = "none";
-		   }
-		  }
-		 }else{
-		  c.setAttribute("meta-id", meta_id);
-		 }
-		});
-		*/
+          }else{
+           c.style.display = "none";
+           if(childs.length === 1){
+            el.style.display = "none";
+           }
+          }
+         }else{
+          c.setAttribute("meta-id", meta_id);
+         }
+        });
+        */
         setAttrSelector(el, content_div, 0, index, array.length);
     });
 
     /*
-	content_div.querySelectorAll(`.ae-popup .edit-user-metadata-buttons button`).forEach((el) => {
-	}
-	*/
+    content_div.querySelectorAll(`.ae-popup .edit-user-metadata-buttons button`).forEach((el) => {
+    }
+    */
 }
 
 function createButtons4Extensions() {
@@ -313,17 +313,17 @@ function createButtons4Extensions() {
         const cid = c.id;
         const nid = cid.split('tab_')[1];
         if (cid !== "tab_txt2img" &&
-			cid !== "tab_img2img" &&
-			cid !== "tab_extras" &&
-			cid !== "tab_pnginfo" &&
-			cid !== "tab_train" &&
-			cid !== "tab_modelmerger" &&
-			cid !== "tab_settings" &&
-			cid !== "tab_extensions" &&
-			cid !== "tab_ui_theme" &&
+            cid !== "tab_img2img" &&
+            cid !== "tab_extras" &&
+            cid !== "tab_pnginfo" &&
+            cid !== "tab_train" &&
+            cid !== "tab_modelmerger" &&
+            cid !== "tab_settings" &&
+            cid !== "tab_extensions" &&
+            cid !== "tab_ui_theme" &&
             cid !== "tab_deforum_interface" &&
-			cid !== "tab_anapnoe_dock" &&
-			cid !== "tab_anapnoe_sd_uiux_core") {
+            cid !== "tab_anapnoe_dock" &&
+            cid !== "tab_anapnoe_sd_uiux_core") {
             //tab_openpose_editor
             const temp = document.createElement('div');
             temp.innerHTML = `
@@ -574,14 +574,14 @@ function onUiUxReady(content_div) {
 
             console.log("Starting optimizations for Extra Networks");
             /* content_div.querySelector("#img2img_textual_inversion_cards_html")?.remove();
-			content_div.querySelector("#img2img_checkpoints_cards_html")?.remove();
-			content_div.querySelector("#img2img_hypernetworks_cards_html")?.remove();
-			content_div.querySelector("#img2img_lora_cards_html")?.remove();
+            content_div.querySelector("#img2img_checkpoints_cards_html")?.remove();
+            content_div.querySelector("#img2img_hypernetworks_cards_html")?.remove();
+            content_div.querySelector("#img2img_lora_cards_html")?.remove();
 
-			console.log("Remove element #img2img_textual_inversion_cards_html");
-			console.log("Remove element #img2img_checkpoints_cards_html");
-			console.log("Remove element #img2img_hypernetworks_cards_html");
-			console.log("Remove element #img2img_lora_cards_html"); */
+            console.log("Remove element #img2img_textual_inversion_cards_html");
+            console.log("Remove element #img2img_checkpoints_cards_html");
+            console.log("Remove element #img2img_hypernetworks_cards_html");
+            console.log("Remove element #img2img_lora_cards_html"); */
 
             content_div.querySelectorAll(".extra-network-cards, .extra-network-tree").forEach((el) => {
                 updateExtraNetworksCards(el);
@@ -644,52 +644,52 @@ function onUiUxReady(content_div) {
             //controlnet copy alpha mask for inpaint
             //not needed any more but i will use this in img2img inpaint roundtrip
             /*
-			function copyCanvas(sourceId, destId) {
+            function copyCanvas(sourceId, destId) {
 
-			 let sourceImage = document.querySelector(sourceId);
-			 let destCanvas = document.querySelector(destId);
+             let sourceImage = document.querySelector(sourceId);
+             let destCanvas = document.querySelector(destId);
 
-			 let destContext = destCanvas.getContext("2d");
+             let destContext = destCanvas.getContext("2d");
 
-			 destContext.clearRect(0, 0, destCanvas.width, destCanvas.height);
-			 destContext.drawImage(sourceImage, 0, 0, destCanvas.width, destCanvas.height);
+             destContext.clearRect(0, 0, destCanvas.width, destCanvas.height);
+             destContext.drawImage(sourceImage, 0, 0, destCanvas.width, destCanvas.height);
 
-			 let imageData = destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
-			 let data = imageData.data;
+             let imageData = destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
+             let data = imageData.data;
 
-			 for (var i = 0; i < data.length; i += 4) {
-			  var alpha = data[i + 3];
-			  data[i] = 255;
-			  data[i + 1] = 255;
-			  data[i + 2] = 255;
-			  data[i + 3] = alpha;
-			 }
+             for (var i = 0; i < data.length; i += 4) {
+              var alpha = data[i + 3];
+              data[i] = 255;
+              data[i + 1] = 255;
+              data[i + 2] = 255;
+              data[i + 3] = alpha;
+             }
 
-			 destContext.putImageData(imageData, 0, 0);
-			}
+             destContext.putImageData(imageData, 0, 0);
+            }
 
-			window.addEventListener("keydown", function(event) {
-			 if (event.key === "0") {
-			  let source = "#txt2img_controlnet_ControlNet-0_input_image img";
-			  let dest = "#txt2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
-			  if(source && dest){
-			   copyCanvas(source, dest);
-			   console.log("copy to canvas inpaint");
-			  }
-			 }
+            window.addEventListener("keydown", function(event) {
+             if (event.key === "0") {
+              let source = "#txt2img_controlnet_ControlNet-0_input_image img";
+              let dest = "#txt2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
+              if(source && dest){
+               copyCanvas(source, dest);
+               console.log("copy to canvas inpaint");
+              }
+             }
 
-			 if (event.key === "9") {
-			  let source = "#img2img_controlnet_ControlNet-0_input_image img";
-			  let dest = "#img2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
-			  if(source && dest){
-			   copyCanvas(source, dest);
-			   console.log("copy to canvas inpaint");
-			  }
-			 }
+             if (event.key === "9") {
+              let source = "#img2img_controlnet_ControlNet-0_input_image img";
+              let dest = "#img2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
+              if(source && dest){
+               copyCanvas(source, dest);
+               console.log("copy to canvas inpaint");
+              }
+             }
 
 
-			});
-			*/
+            });
+            */
 
         }
     }, 500);
@@ -880,15 +880,15 @@ function initDefaultComponents(content_div) {
         //console.log(txt, pid)
         //window.alert(txt, pid);
         /*
-		if (txt && pid) {
-		 document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
-		  //console.log(elm.innerHTML, txt);
-		  if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
-		   elm.click();
-		  }
-		 });
-		}
-		*/
+        if (txt && pid) {
+         document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
+          //console.log(elm.innerHTML, txt);
+          if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
+           elm.click();
+          }
+         });
+        }
+        */
 
 
     }
@@ -1095,12 +1095,12 @@ function uiuxOptionSettings() {
                     style.setProperty(
                         "--ae-slider-bg-overlay",
                         "repeating-linear-gradient( 90deg, transparent, transparent " +
-						tsp +
-						", var(--ae-input-border-color) " +
-						tsp +
-						", var(--ae-input-border-color) " +
-						fsp +
-						" )"
+                        tsp +
+                        ", var(--ae-input-border-color) " +
+                        tsp +
+                        ", var(--ae-input-border-color) " +
+                        fsp +
+                        " )"
                     );
                 });
         } else if (interactive) {
@@ -1134,16 +1134,16 @@ function uiuxOptionSettings() {
             token_value = token_value.replaceAll(" ", "");
 
             /* if(token_name.indexOf("Model hash") != -1){
-			 const info_label = gradioApp().querySelector("[id$='2img_override_settings'] label span");
-			 info_label.innerHTML = "Override settings MDL: unknown";
-			 for (let m=0; m<sdCheckpointModels.length; m++) {
-			  let m_str = sdCheckpointModels[m];
-			  if(m_str.indexOf(token_value) != -1 ){
-			   info_label.innerHTML = "Override settings <i>MDL: " +  m_str.split("[")[0] + "</i>";
-			   break;
-			  }
-			 }
-			} */
+             const info_label = gradioApp().querySelector("[id$='2img_override_settings'] label span");
+             info_label.innerHTML = "Override settings MDL: unknown";
+             for (let m=0; m<sdCheckpointModels.length; m++) {
+              let m_str = sdCheckpointModels[m];
+              if(m_str.indexOf(token_value) != -1 ){
+               info_label.innerHTML = "Override settings <i>MDL: " +  m_str.split("[")[0] + "</i>";
+               break;
+              }
+             }
+            } */
 
             if (checked_overrides.indexOf(token_name) != -1) {
                 gradioApp().querySelector("[id$='2img_override_settings']").classList.add("show");
@@ -1160,14 +1160,14 @@ function uiuxOptionSettings() {
         }, 100);
     });
     /*
-	gradioApp().querySelectorAll("#pnginfo_send_buttons button, #paste").forEach(function (elem) {
-	  elem.addEventListener("click", function (e) {
-	 setTimeout(function () {
-	  remove_overrides();
-	 }, 500);
-	  });
-	});
-	*/
+    gradioApp().querySelectorAll("#pnginfo_send_buttons button, #paste").forEach(function (elem) {
+      elem.addEventListener("click", function (e) {
+     setTimeout(function () {
+      remove_overrides();
+     }, 500);
+      });
+    });
+    */
 
     const overrides_observer_class = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
@@ -1303,7 +1303,7 @@ function setupAdditionalStylesForExtensions() {
             const new_style_element = document.createElement("style");
             //getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
             new_style_element.textContent =
-				`
+                `
    ${rootCssText}
    :root body {
     --zp-primary: var(--ae-primary-color)!important;
@@ -1511,7 +1511,7 @@ function setupOnLoadResources() {
             const new_style_element = document.createElement("style");
             //getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
             new_style_element.textContent =
-			`
+                `
 			${rootCssText}
 			:root body {
 				--zp-primary: var(--ae-primary-color)!important;
@@ -1874,11 +1874,11 @@ function setupLogger() {
                 if (argstr.indexOf("remove") !== -1 || argstr.indexOf("error") !== -1) {
                     acolor += " log-remove";
                 } else if (argstr.indexOf("loading") !== -1 ||
-					argstr.indexOf("| ref") !== -1 ||
-					argstr.indexOf("initial") !== -1 ||
-					argstr.indexOf("optimiz") !== -1 ||
-					argstr.indexOf("python") !== -1 ||
-					argstr.indexOf("success") !== -1) {
+                    argstr.indexOf("| ref") !== -1 ||
+                    argstr.indexOf("initial") !== -1 ||
+                    argstr.indexOf("optimiz") !== -1 ||
+                    argstr.indexOf("python") !== -1 ||
+                    argstr.indexOf("success") !== -1) {
                     acolor += " log-load";
                 } else if (argstr.indexOf("[") !== -1) {
                     acolor += " log-object";
@@ -1894,8 +1894,8 @@ function setupLogger() {
                 <span class="log-${(typeof arg)} ${acolor}">`;
                 if (
                     typeof arg === "object" &&
-					typeof JSON === "object" &&
-					typeof JSON.stringify === "function"
+                    typeof JSON === "object" &&
+                    typeof JSON.stringify === "function"
                 ) {
                     output += JSON.stringify(arg);
                 } else {
@@ -1917,7 +1917,11 @@ function setupLogger() {
 
     console.log("Initialize Anapnoe UI/UX runtime engine version 0.0.2");
     console.log(navigator.userAgent);
-    const versions = gradioApp().querySelector(".versions");
+
+    let versions = gradioApp().querySelector(".versions");
+    versions.innerHTML = versions.innerHTML
+        .replace("AUTOMATIC1111/stable-diffusion-webui", "anapnoe/stable-diffusion-webui-ux")
+        .replace(/\n/g, '').split("• ").join("<br>");
     console.log(versions.innerHTML);
 
     console.log("Console log enabled: ", window.opts.uiux_enable_console_log);
