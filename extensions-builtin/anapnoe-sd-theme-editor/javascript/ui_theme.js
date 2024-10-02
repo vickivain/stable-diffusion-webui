@@ -383,16 +383,24 @@ function observeGradioApp() {
     const observer = new MutationObserver(() => {
         const css = document.querySelector('[rel="stylesheet"][href*="user"]');
         const block = gradioApp().getElementById("tab_ui_theme");
+        if (block) {
+            if (css) {
+                observer.disconnect();
+                setTimeout(() => {
+                    const rootRules = Array.from(css.sheet.cssRules).filter((cssRule) => {
+                        return cssRule instanceof CSSStyleRule && cssRule.selectorText === ":root";
+                    });
+                    const rootCssText = rootRules[0].cssText;
+                    initTheme(rootCssText);
+                }, 500);
+            } else {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = './file=user.css';
+                document.head.appendChild(link);
+            }
 
-        if (css && block) {
-            observer.disconnect();
-            setTimeout(() => {
-                const rootRules = Array.from(css.sheet.cssRules).filter((cssRule) => {
-                    return cssRule instanceof CSSStyleRule && cssRule.selectorText === ":root";
-                });
-                const rootCssText = rootRules[0].cssText;
-                initTheme(rootCssText);
-            }, 500);
         }
     });
 
