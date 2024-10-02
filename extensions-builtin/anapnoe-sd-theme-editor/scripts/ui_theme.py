@@ -10,6 +10,16 @@ webui_dir = Path(basedir).parents[1]
 themes_folder = os.path.join(basedir, "themes")
 webui_style_path = os.path.join(webui_dir, "user.css")
 
+def check_and_create_user_css():
+    if not os.path.exists(webui_style_path):
+        theme_css_path = os.path.join(themes_folder, 'sdxl_alpha.css')
+        if os.path.exists(theme_css_path):
+            with open(theme_css_path, 'r', encoding='utf-8') as theme_file:
+                theme_css_content = theme_file.read()
+            style_data = ":root{" + theme_css_content + "}/*BREAKPOINT_CSS_CONTENT*//*BREAKPOINT_CSS_CONTENT*/"
+            with open(webui_style_path, 'w', encoding='utf-8') as user_css_file:
+                user_css_file.write(style_data)
+
 def get_files(folder, file_filter=None, split=False):
     if file_filter is None:
         file_filter = []
@@ -21,6 +31,7 @@ def get_files(folder, file_filter=None, split=False):
     return file_list
 
 def on_ui_tabs():
+    check_and_create_user_css()
     with gr.Blocks(analytics_enabled=False) as ui_theme:
         with gr.Row():
             with gr.Column():
