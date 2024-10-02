@@ -1,21 +1,24 @@
 function hexToRgb(color) {
-    let hex = color[0] === "#" ? color.slice(1) : color;
-    let c;
+    // Check if the color string starts with a '#' and remove it
+    let hex = color.startsWith("#") ? color.slice(1) : color;
+    let a = 1; // Default alpha value
 
-    if (hex.length !== 6) {
-        hex = (() => {
-            const result = [];
-            for (let i = 0; i < Array.from(hex).length; i++) {
-                c = Array.from(hex)[i];
-                result.push(`${c}${c}`);
-            }
-            return result;
-        })().join("");
+    // If the hex is 8 characters long, it includes alpha
+    if (hex.length === 8) {
+        a = parseInt(hex.slice(6, 8), 16) / 255; // Get the alpha value from the last two chars
+        hex = hex.slice(0, 6); // Remove the alpha from hex
+    } else if (hex.length === 3) {
+        hex = hex.split("").map((c) => c + c).join(""); // Convert 3-digit hex to 6-digit
     }
 
-    const colorStr = hex.match(/#?(.{2})(.{2})(.{2})/).slice(1);
-    const rgb = colorStr.map((col) => parseInt(col, 16));
-    rgb.push(1);
+    // Validate hex length
+    if (hex.length !== 6) {
+        throw new Error("Invalid HEX color.");
+    }
+
+    // Convert hex to RGB
+    const rgb = hex.match(/.{2}/g).map((col) => parseInt(col, 16));
+    rgb.push(a); // Add alpha to the RGB array
     return rgb;
 }
 
@@ -23,6 +26,7 @@ function rgbToHsl(rgb) {
     const r = rgb[0] / 255;
     const g = rgb[1] / 255;
     const b = rgb[2] / 255;
+
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const diff = max - min;
@@ -45,54 +49,59 @@ function rgbToHsl(rgb) {
                 diff / add :
                 diff / (2 - add);
 
+    // Check for alpha channel. If not present, default to 1
+    const alpha = rgb.length === 4 ? rgb[3] : 1;
+
     return [
         Math.round(hue),
         Math.round(sat * 100),
         Math.round(lum * 100),
-        rgb[3] || 1,
+        alpha,
     ];
 }
 
 function hexToHsl(color) {
     const rgb = hexToRgb(color);
     const hsl = rgbToHsl(rgb);
-    return `hsl(${hsl[0]}deg ${hsl[1]}% ${hsl[2]}%)`;
+    return `hsl(${hsl[0]}deg ${hsl[1]}% ${hsl[2]}% / ${hsl[3]})`;
 }
 
-function hslToHex(h, s, l) {
+function hslToHex(h, s, l, a = 1) {
     l /= 100;
-    const a = (s * Math.min(l, 1 - l)) / 100;
-
+    const alphaHex = ((a * 255) | 1 << 8).toString(16).slice(1); // Convert alpha to hex
     const f = (n) => {
         const k = (n + h / 30) % 12;
-        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return (
-            Math.round(255 * Math.max(0, Math.min(color, 1)))
-                .toString(16)
-                .padStart(2, "0")
-        );
+        const color = l - (s * Math.min(l, 1 - l)) / 100 * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * Math.max(0, Math.min(color, 1)))
+            .toString(16)
+            .padStart(2, "0");
     };
-
-    return `#${f(0)}${f(8)}${f(4)}`;
+    return `#${f(0)}${f(8)}${f(4)}${alphaHex}`;
 }
 
-function hsl2rgb(h, s, l) {
-    const a = s * Math.min(l, 1 - l);
-
+function hsl2rgb(h, s, l, a = 1) {
+    const alpha = a;
     const f = (n) => {
-        return l - a * Math.max(Math.min(n - 3, 9 - n, 1), -1);
+        const k = (n + h / 30) % 12;
+        return l - (s / 100 * Math.min(l, 1 - l)) * Math.max(Math.min(k - 3, 9 - k, 1), -1);
     };
-
-    return [f(0), f(8), f(4)];
+    return [f(0) * 255, f(8) * 255, f(4) * 255, alpha];
 }
 
 function invertColor(hex) {
     if (hex.startsWith("#")) {
-        hex = hex.slice(1);
+        hex = hex.slice(1); // Remove '#' character
+    }
+
+    let a = 1; // Default alpha if not provided
+    // If there is an alpha in the hex string (8 characters long)
+    if (hex.length === 8) {
+        a = parseInt(hex.slice(6, 8), 16) / 255;
+        hex = hex.slice(0, 6); // Remove the alpha from hex
     }
 
     if (hex.length === 3) {
-        hex = hex.split("").map((c) => c + c).join("");
+        hex = hex.split("").map((c) => c + c).join(""); // Convert 3-digit hex to 6-digit
     }
 
     if (hex.length !== 6) {
@@ -103,13 +112,15 @@ function invertColor(hex) {
     const g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16);
     const b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
 
-    return `#${padZero(r)}${padZero(g)}${padZero(b)}`;
+    return `#${padZero(r)}${padZero(g)}${padZero(b)}${padZero(Math.round(a * 255).toString(16))}`;
 }
 
 function padZero(str, len = 2) {
     const zeros = new Array(len).join("0");
     return (zeros + str).slice(-len);
 }
+
+
 
 function getValsWrappedIn(str, c1, c2) {
     const rg = new RegExp(`(?<=\\${c1})(.*?)(?=\\${c2})`, "g");
@@ -119,10 +130,10 @@ function getValsWrappedIn(str, c1, c2) {
 const styleobj = {};
 const hslobj = {};
 let isColorsInv;
-let hsloffset = [0, 0, 0];
+let hsloffset = [0, 0, 0, 0];
 
-const toHSLArray = (hslStr) =>
-    hslStr.match(/\d+/g).map(Number);
+const toColorArray = (colStr) =>
+    colStr.match(/[\d.]+/g).map(Number);
 
 function updateColorHSV(el, key, keyVal, ohsl) {
     let hsl;
@@ -134,25 +145,26 @@ function updateColorHSV(el, key, keyVal, ohsl) {
             styleobj[key] = hexColor;
         }
         hsl = rgbToHsl(hexToRgb(hexColor));
-    } else if (keyVal.includes("hsl")) {
+    } else if (keyVal.includes("hsl") || keyVal.includes("rgb")) {
+        hsl = keyVal.includes("rgb") ? rgbToHsl(toColorArray(keyVal)) : toColorArray(keyVal);
         if (isColorsInv) {
-            const hslArray = toHSLArray(keyVal);
-            const invertedHex = hslToHex(hslArray[0], hslArray[1], hslArray[2]);
+            const invertedHex = hslToHex(hsl[0], hsl[1], hsl[2], hsl[3]);
             styleobj[key] = invertColor(invertedHex);
             hsl = rgbToHsl(hexToRgb(styleobj[key]));
-        } else {
-            hsl = toHSLArray(keyVal);
         }
     }
 
-    const h = (parseInt(hsl[0]) + parseInt(ohsl[0])) % 360;
-    const s = Math.min(Math.max(parseInt(hsl[1]) + parseInt(ohsl[1]), 0), 100);
-    const l = Math.min(Math.max(parseInt(hsl[2]) + parseInt(ohsl[2]), 0), 100);
-    const hex = hslToHex(h, s, l);
+    //console.log(hsl, el, key, keyVal, ohsl);
+
+    const h = ((Number(hsl[0]) || 0) + (Number(ohsl[0]) || 0)) % 360;
+    const s = Math.min(Math.max((Number(hsl[1]) || 0) + (Number(ohsl[1]) || 0), 0), 100);
+    const l = Math.min(Math.max((Number(hsl[2]) || 0) + (Number(ohsl[2]) || 0), 0), 100);
+    const a = Math.min(Math.max((Number(hsl[3]) || 1) + (Number(ohsl[3]) || 0), 0), 1);
+    const hex = hslToHex(h, s, l, a).slice(0, -2);
 
     el.value = hex;
 
-    return `hsl(${h}deg ${s}% ${l}%)`;
+    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
 }
 
 function offsetColorsHSV(ohsl) {
@@ -196,9 +208,13 @@ function updateTheme(vars) {
         elem.forEach((el) => {
             const inputType = el.type || 'text';
             if (inputType === "color") {
-                if (val.includes("hsl")) {
-                    const hsl = toHSLArray(val);
-                    el.value = hslToHex(hsl[0], hsl[1], hsl[2]);
+                if (val.includes("hsl") || val.includes("rgb")) {
+                    if (val.includes("rgb")) {
+                        hsl = rgbToHsl(toColorArray(val));
+                    } else {
+                        hsl = toColorArray(val);
+                    }
+                    el.value = hslToHex(hsl[0], hsl[1], hsl[2], hsl[3]).slice(0, -2);
                 } else {
                     el.value = val;
                 }
