@@ -119,55 +119,57 @@ function getValsWrappedIn(str, c1, c2) {
 const styleobj = {};
 const hslobj = {};
 let isColorsInv;
+let hsloffset = [0, 0, 0];
 
 const toHSLArray = (hslStr) =>
     hslStr.match(/\d+/g).map(Number);
+
+function updateColorHSV(el, key, keyVal, ohsl) {
+    let hsl;
+
+    if (keyVal.includes("#")) {
+        let hexColor = keyVal.replace(/\s+/g, "");
+        if (isColorsInv) {
+            hexColor = invertColor(hexColor);
+            styleobj[key] = hexColor;
+        }
+        hsl = rgbToHsl(hexToRgb(hexColor));
+    } else if (keyVal.includes("hsl")) {
+        if (isColorsInv) {
+            const hslArray = toHSLArray(keyVal);
+            const invertedHex = hslToHex(hslArray[0], hslArray[1], hslArray[2]);
+            styleobj[key] = invertColor(invertedHex);
+            hsl = rgbToHsl(hexToRgb(styleobj[key]));
+        } else {
+            hsl = toHSLArray(keyVal);
+        }
+    }
+
+    const h = (parseInt(hsl[0]) + parseInt(ohsl[0])) % 360;
+    const s = Math.min(Math.max(parseInt(hsl[1]) + parseInt(ohsl[1]), 0), 100);
+    const l = Math.min(Math.max(parseInt(hsl[2]) + parseInt(ohsl[2]), 0), 100);
+    const hex = hslToHex(h, s, l);
+
+    el.value = hex;
+
+    return `hsl(${h}deg ${s}% ${l}%)`;
+}
 
 function offsetColorsHSV(ohsl) {
     let inner_styles = "";
 
     for (const key in styleobj) {
-        let keyVal = styleobj[key];
-
-        if (key != "") {
-
-            if (keyVal.includes("#") || keyVal.includes("hsl")) {
-                const colcomp = document.body.querySelector(`#${key} input`);
-
-                if (colcomp) {
-                    let hsl;
-
-                    if (keyVal.includes("#")) {
-                        keyVal = keyVal.replace(/\s+/g, "");
-
-                        if (isColorsInv) {
-                            keyVal = invertColor(keyVal);
-                            styleobj[key] = keyVal;
-                        }
-
-                        hsl = rgbToHsl(hexToRgb(keyVal));
-                    } else {
-                        if (isColorsInv) {
-                            const c = toHSLArray(keyVal);
-                            const _hex = hslToHex(c[0], c[1], c[2]);
-                            styleobj[key] = invertColor(_hex);
-                            hsl = rgbToHsl(hexToRgb(styleobj[key]));
-                        } else {
-                            hsl = toHSLArray(keyVal);
-                        }
-                    }
-
-                    const h = (parseInt(hsl[0]) + parseInt(ohsl[0])) % 360;
-                    const s = Math.min(Math.max(parseInt(hsl[1]) + parseInt(ohsl[1]), 0), 100);
-                    const l = Math.min(Math.max(parseInt(hsl[2]) + parseInt(ohsl[2]), 0), 100);
-
-                    const hex = hslToHex(h, s, l);
-                    colcomp.value = hex;
-                    hslobj[key] = `hsl(${h}deg ${s}% ${l}%)`;
-                    inner_styles += `${key}:${hslobj[key]};`;
+        const keyVal = styleobj[key];
+        if (key != "" && keyVal && keyVal.length > 0) {
+            const el = document.body.querySelector(`#${key} input`) || document.body.querySelector(`#${key} textarea`);
+            if (el) {
+                const inputType = el.type || 'text';
+                if (inputType === "color") {
+                    const hslVal = updateColorHSV(el, key, keyVal, ohsl);
+                    inner_styles += `${key}:${hslVal};`;
+                } else {
+                    inner_styles += `${key}:${styleobj[key]};`;
                 }
-            } else {
-                inner_styles += `${key}:${styleobj[key]};`;
             }
         }
     }
@@ -187,15 +189,23 @@ function updateTheme(vars) {
 
     for (let i = 0; i < vars.length - 1; i++) {
         const [id, val] = vars[i].split(":").map((v) => v.trim());
-        styleobj[id.replace(/\s+/g, "")] = val;
-        inner_styles += `${id}:${val};`;
-        const elem = document.body.querySelectorAll(`#${id} input`);
+        const cid = id.replace(/\s+/g, "");
+        styleobj[cid] = val;
+        inner_styles += `${cid}:${val};`;
+        const elem = document.body.querySelectorAll(`#${cid} input, #${cid} textarea`);
         elem.forEach((el) => {
-            if (val.includes("hsl")) {
-                const hsl = toHSLArray(val);
-                el.value = hslToHex(hsl[0], hsl[1], hsl[2]);
-            } else {
-                el.value = val.split("px")[0];
+            const inputType = el.type || 'text';
+            if (inputType === "color") {
+                if (val.includes("hsl")) {
+                    const hsl = toHSLArray(val);
+                    el.value = hslToHex(hsl[0], hsl[1], hsl[2]);
+                } else {
+                    el.value = val;
+                }
+            } else if (inputType === "number" || inputType === "range") {
+                el.value = parseFloat(val) || 0;
+            } else if (inputType === "textarea" || inputType === "text") {
+                el.value = val;
             }
         });
     }
@@ -225,8 +235,10 @@ function applyTheme() {
 }
 
 function initTheme(styles) {
+
     const css_styles = styles.split("/*BREAKPOINT_CSS_CONTENT*/");
     let init_css_vars = css_styles[0].split("}")[0].split("{")[1].replace(/\n|\r/g, "");
+    init_css_vars = init_css_vars.replace(/;+/, ";").trim();
     const init_vars = init_css_vars.split(";");
 
     const vars_textarea = document.body.querySelector("#theme_vars textarea");
@@ -246,35 +258,60 @@ function initTheme(styles) {
     }
 
     let intervalChange;
+    function updateStyles(elem) {
+        let val = elem.value, parentEl = elem.parentElement, inputType = elem.type || 'text';
+
+        if (inputType === "range" || inputType === "number") {
+            parentEl = elem.closest(".gradio-slider") || elem.closest(".gradio-number");
+            val += parentEl.id.indexOf("angle") !== -1 ? "deg" : (parentEl.id.indexOf("slider-height") === -1 ? "px" : "");
+            styleobj[parentEl.id] = val;
+        } else if (inputType === "color") {
+            parentEl = elem.closest(".gradio-colorpicker");
+            //styleobj[parentEl.id] = updateColorHSV(elem, parentEl.id, val, hsloffset);
+            styleobj[parentEl.id] = val;
+        } else if (inputType === "textarea") {
+            parentEl = elem.closest(".gradio-textbox");
+            val.length > 0 ? styleobj[parentEl.id] = val : delete styleobj[parentEl.id];
+        } else if (inputType === "text") {
+            parentEl = elem.closest(".gradio-dropdown");
+            if (parentEl) styleobj[parentEl.id] = val;
+        }
+
+        if (intervalChange != null) clearInterval(intervalChange);
+        intervalChange = setTimeout(() => {
+            let inner_styles = Object.entries(styleobj).map(([key, value]) => `${key}:${value};`).join('');
+            vars_textarea.value = inner_styles;
+            preview_styles.innerHTML = `:root {${inner_styles}}@media only screen and (max-width: 860px) { :root { --ae-outside-gap-size: var(--ae-mobile-outside-gap-size); --ae-inside-padding-size: var(--ae-mobile-inside-padding-size); } }`;
+            window.updateInput(vars_textarea);
+            offsetColorsHSV(hsloffset);
+        }, 1000);
+    }
+
+    // Attach input event listener
     document.body
-        .querySelectorAll("#ui_theme_settings input")
+        .querySelectorAll("#ui_theme_settings input, #ui_theme_settings textarea")
         .forEach((elem) => {
             elem.addEventListener("input", (e) => {
-                let val = e.currentTarget.value;
-                if (e.currentTarget.type === "range" || e.currentTarget.type === "number") {
-                    val += "px";
-                    styleobj[e.currentTarget.parentElement.id] = val;
-                }
-                if (e.currentTarget.type === "color") {
-                    val = e.currentTarget.value;
-                    styleobj[e.currentTarget.parentElement.parentElement.id] = val;
-                }
-
-                if (intervalChange != null) clearInterval(intervalChange);
-                intervalChange = setTimeout(() => {
-                    let inner_styles = "";
-                    for (const key in styleobj) {
-                        inner_styles += `${key}:${styleobj[key]};`;
-                    }
-
-                    vars_textarea.value = inner_styles;
-                    preview_styles.innerHTML = `:root {${inner_styles}}`;
-                    preview_styles.innerHTML += `@media only screen and (max-width: 860px) { :root { --ae-outside-gap-size: var(--ae-mobile-outside-gap-size); --ae-inside-padding-size: var(--ae-mobile-inside-padding-size); } }`;
-
-                    window.updateInput(vars_textarea);
-                    offsetColorsHSV(hsloffset);
-                }, 1000);
+                updateStyles(e.currentTarget);
             });
+        });
+
+    // Set up MutationObserver to listen for dropdown changes
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.removedNodes.forEach((node) => {
+                if (node.nodeType === 1 && node.matches('ul')) {
+                    //window.alert(mutation.target.querySelector(".secondary-wrap input").value);
+                    updateStyles(mutation.target.querySelector(".secondary-wrap input"));
+                }
+            });
+        });
+    });
+
+    document.body
+        .querySelectorAll("#ui_theme_settings .gradio-dropdown")
+        .forEach((elem) => {
+            observer.observe(elem, {childList: true, subtree: true});
         });
 
     const reset_btn = document.getElementById("theme_reset_btn");
@@ -290,7 +327,6 @@ function initTheme(styles) {
     });
 
     let intervalCheck;
-
     function dropDownOnChange() {
         if (init_css_vars !== vars_textarea.value) {
             clearInterval(intervalCheck);
@@ -309,34 +345,12 @@ function initTheme(styles) {
         intervalCheck = setInterval(dropDownOnChange, 500);
     });
 
-    let hsloffset = [0, 0, 0];
-
     document.body
-        .querySelectorAll("#theme_hue input")
-        .forEach((elem) => {
+        .querySelectorAll("#theme_hue input, #theme_sat input, #theme_brt input")
+        .forEach((elem, index) => {
             elem.addEventListener("change", (e) => {
                 e.preventDefault();
-                hsloffset[0] = e.currentTarget.value;
-                offsetColorsHSV(hsloffset);
-            });
-        });
-
-    document.body
-        .querySelectorAll("#theme_sat input")
-        .forEach((elem) => {
-            elem.addEventListener("change", (e) => {
-                e.preventDefault();
-                hsloffset[1] = e.currentTarget.value;
-                offsetColorsHSV(hsloffset);
-            });
-        });
-
-    document.body
-        .querySelectorAll("#theme_brt input")
-        .forEach((elem) => {
-            elem.addEventListener("change", (e) => {
-                e.preventDefault();
-                hsloffset[2] = e.currentTarget.value;
+                hsloffset[Math.floor(index / 2)] = e.currentTarget.value;
                 offsetColorsHSV(hsloffset);
             });
         });
