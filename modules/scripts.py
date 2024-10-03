@@ -489,7 +489,7 @@ def custom_sort_key(filename):
     base = match.group(1) if match else filename
     suffix = match.group(2) if match else ''
     extension = match.group(3) if match else ''
-    
+
     # 1. Base name
     # 2. Suffix (optional)
     return (base, suffix, extension)
@@ -501,7 +501,7 @@ def list_files_with_prefix(prefix, file_extension):
     for dirpath in dirs:
         if not os.path.isdir(dirpath):
             continue
-        
+
         for filename in os.listdir(dirpath):
             if filename.startswith(prefix) and filename.endswith(file_extension):
                 res.append(os.path.join(dirpath, filename))

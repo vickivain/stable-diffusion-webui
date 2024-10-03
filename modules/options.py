@@ -332,7 +332,7 @@ class OptionsCategories:
 
         # Use a dictionary to hold the categories temporarily
         temp_mapping = self.mapping.copy()
-        
+
         # Insert the new category at the specified position
         if position is not None and position == 0:
             temp_mapping = {category_id: OptionsCategory(category_id, label), **temp_mapping}
