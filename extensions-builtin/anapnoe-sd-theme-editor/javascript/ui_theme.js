@@ -327,7 +327,7 @@ function initTheme(styles) {
     document.body
         .querySelectorAll("#ui_theme_settings .gradio-dropdown")
         .forEach((elem) => {
-            observer.observe(elem, {childList: true, subtree: true});
+            observer.observe(elem, { childList: true, subtree: true });
         });
 
     const reset_btn = document.getElementById("theme_reset_btn");
@@ -382,7 +382,7 @@ function initTheme(styles) {
 function observeGradioApp() {
     const observer = new MutationObserver(() => {
         const css = document.querySelector('[rel="stylesheet"][href*="user"]');
-        const block = gradioApp().getElementById("tab_ui_theme");
+        const block = gradioApp().querySelector('[id^="tab_ui_theme"]');
         if (block) {
             if (css) {
                 observer.disconnect();

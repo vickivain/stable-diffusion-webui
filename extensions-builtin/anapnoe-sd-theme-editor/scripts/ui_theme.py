@@ -3,10 +3,12 @@ from pathlib import Path
 import gradio as gr
 import modules.scripts as scripts
 from modules import script_callbacks
+import importlib.util
 
 basedir = scripts.basedir()
 webui_dir = Path(basedir).parents[1]
 
+scripts_folder = os.path.join(basedir, "scripts")
 themes_folder = os.path.join(basedir, "themes")
 webui_style_path = os.path.join(webui_dir, "user.css")
 
@@ -29,6 +31,23 @@ def get_files(folder, file_filter=None, split=False):
         if os.path.isfile(os.path.join(folder, file_name)) and file_name not in file_filter
     ]
     return file_list
+
+def dynamic_load_ui_tabs():
+    ui_theme_v2_path = os.path.join(scripts_folder, 'ui_theme_v2.py')
+    if os.path.exists(ui_theme_v2_path):
+        spec = importlib.util.spec_from_file_location("ui_theme_v2", ui_theme_v2_path)
+        ui_theme_v2_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(ui_theme_v2_module)
+
+        if hasattr(ui_theme_v2_module, 'on_ui_tabs'):
+            return ui_theme_v2_module.on_ui_tabs
+
+    return on_ui_tabs
+
+def check_and_use_theme_v2():
+    ui_theme_v2_path = os.path.join(scripts_folder, 'ui_theme_v2.py')
+    if not os.path.exists(ui_theme_v2_path):
+        return on_ui_tabs
 
 def on_ui_tabs():
     check_and_create_user_css()
@@ -129,4 +148,5 @@ def on_ui_tabs():
 
     return (ui_theme, 'Theme', 'ui_theme'),
 
-script_callbacks.on_ui_tabs(on_ui_tabs)
+
+script_callbacks.on_ui_tabs(check_and_use_theme_v2)
