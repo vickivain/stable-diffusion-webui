@@ -327,7 +327,7 @@ function initTheme(styles) {
     document.body
         .querySelectorAll("#ui_theme_settings .gradio-dropdown")
         .forEach((elem) => {
-            observer.observe(elem, { childList: true, subtree: true });
+            observer.observe(elem, {childList: true, subtree: true});
         });
 
     const reset_btn = document.getElementById("theme_reset_btn");

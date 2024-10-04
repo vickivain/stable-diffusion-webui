@@ -1,13 +1,13 @@
 const anapnoe_app_id = "#anapnoe_app";
 
-window.all_gallery_buttons = function () {
+window.all_gallery_buttons = function() {
     //orig_all_gallery_buttons();
     var tabitem = gradioApp().querySelector('#main-nav-bar button.active')?.getAttribute('tabitemid');
     var visibleGalleryButtons = [];
     if (tabitem) {
         //console.log(tabitem, allGalleryButtons);
         var allGalleryButtons = gradioApp().querySelectorAll(tabitem + ' .gradio-gallery .thumbnails > .thumbnail-small');
-        allGalleryButtons?.forEach(function (elem) {
+        allGalleryButtons?.forEach(function(elem) {
             if (elem.parentElement.offsetParent && elem.parentElement.offsetParent !== document.body) {
                 visibleGalleryButtons.push(elem);
             }
@@ -16,7 +16,7 @@ window.all_gallery_buttons = function () {
     return visibleGalleryButtons;
 };
 
-window.extraNetworksSearchButton = function (tabname, extra_networks_tabname, event) {
+window.extraNetworksSearchButton = function(tabname, extra_networks_tabname, event) {
     var attr = event.target.parentElement.parentElement.getAttribute("search-field");
     var searchTextarea = gradioApp().querySelector(attr);
     var button = event.target;
@@ -26,11 +26,11 @@ window.extraNetworksSearchButton = function (tabname, extra_networks_tabname, ev
     window.updateInput(searchTextarea);
 };
 
-window.imageMaskResize = function () {
+window.imageMaskResize = function() {
     // override function empty we dont need any fix here
 };
 
-window.extraNetworksEditUserMetadata = function (event, tabname, extraPage) {
+window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
     var tid = 'txt2img_' + extraPage + '_edit_user_metadata';
     /* eslint-disable no-undef */
     var editor = extraPageUserMetadataEditors[tid];
@@ -52,7 +52,7 @@ window.extraNetworksEditUserMetadata = function (event, tabname, extraPage) {
     event.stopPropagation();
 };
 
-window.get_uiCurrentTabContent = function () {
+window.get_uiCurrentTabContent = function() {
     //console.log(active_main_tab);
     if (active_main_tab.id === "tab_txt2img") {
         return document.getElementById("txt2img_tabitem");
@@ -157,7 +157,7 @@ function switchMobile() {
          applyDefaultLayout(isMobile);
         }));
         */
-        window.addEventListener('resize', function (event) {
+        window.addEventListener('resize', function(event) {
             const isMobile = detectMobile();
             applyDefaultLayout(isMobile);
         });
@@ -205,12 +205,12 @@ function setAttrSelector(parent_elem, content_div, count, index, length) {
     let target_elem;
 
     switch (mcount) {
-        case 0:
-            target_elem = document.querySelector(`${sp} ${s}`);
-            break;
-        case 1:
-            target_elem = content_div.querySelector(`${s}`);
-            break;
+    case 0:
+        target_elem = document.querySelector(`${sp} ${s}`);
+        break;
+    case 1:
+        target_elem = content_div.querySelector(`${s}`);
+        break;
     }
 
     if (target_elem && parent_elem) {
@@ -357,11 +357,11 @@ function createButtons4Extensions() {
 
 function setupExtraNetworksSearchSort() {
 
-    const applyFilter = function (e) {
+    const applyFilter = function(e) {
         const search_term = e.target.value.toLowerCase();
         const cards = e.target.getAttribute("data-target");
         //console.log(search_term, cards )
-        gradioApp().querySelectorAll(cards).forEach(function (elem) {
+        gradioApp().querySelectorAll(cards).forEach(function(elem) {
             //const text = elem.querySelector(".search_term").textContent;//elem.getAttribute("data-path").toLowerCase().split("\\").join("/");
             //const text = elem.querySelector('.name').textContent.toLowerCase() + " " + elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();
             const text = elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();
@@ -404,11 +404,11 @@ function setupExtraNetworksSearchSort() {
     }
 
     document.querySelectorAll('.extra_networks_order_by').forEach((el) => {
-        el.addEventListener('change', function (e) {
+        el.addEventListener('change', function(e) {
             applySort(e.target, this.value);
             //console.log('You selected: ', this.value);
         });
-        el.nextElementSibling.addEventListener('click', function (e) {
+        el.nextElementSibling.addEventListener('click', function(e) {
             applySort(el, el.value);
             console.log('You selected: ', el.value);
         });
@@ -443,7 +443,7 @@ function updateExtraNetworksCards(el) {
     });
 
     console.log("Attach EventListener", el.id);
-    el.addEventListener("click", function (e) {
+    el.addEventListener("click", function(e) {
         const ctarget = e.target;
         if (ctarget && ctarget.className.indexOf("card") !== -1 || ctarget && ctarget.className.indexOf("tree-list-content") !== -1) {
             let data_apply = ctarget.getAttribute("data-apply");
@@ -487,7 +487,7 @@ function updateExtraNetworksCards(el) {
     });
 
     document.querySelectorAll("#txt2img_styles_edit_button, #img2img_styles_edit_button").forEach((elm) => {
-        elm.addEventListener("click", function (e) {
+        elm.addEventListener("click", function(e) {
             /* eslint-disable no-undef */
             popup_trigger.click();
             testpopup();
@@ -500,7 +500,7 @@ function updateExtraNetworksCards(el) {
 
 function setupAnimationEventListeners() {
 
-    document.addEventListener('animationend', function (e) {
+    document.addEventListener('animationend', function(e) {
         if (e.animationName === 'fade-out') {
             e.target.classList.add('hidden');
         }
@@ -508,7 +508,7 @@ function setupAnimationEventListeners() {
 
     const notransition = window.opts.uiux_disable_transitions;
 
-    document.addEventListener('animationstart', function (e) {
+    document.addEventListener('animationstart', function(e) {
         if (notransition) {
             e.target.classList.add("notransition");
         }
@@ -532,12 +532,12 @@ function showContributors() {
  We're grateful for the many individuals who have generously put their time and effort to make this possible.`;
     contributors_view.append(temp);
 
-    contributors_btn.addEventListener('click', function (e) {
+    contributors_btn.addEventListener('click', function(e) {
         //console.log(getAllContributors("anapnoe/stable-diffusion-webui-ux"));
         if (!contributors_btn.getAttribute("data-visited")) {
             contributors_btn.setAttribute("data-visited", "true");
             const promise = getAllContributorsRecursive("anapnoe/stable-diffusion-webui-ux");
-            promise.then(function (result) {
+            promise.then(function(result) {
                 //console.log(result)
                 temp.innerHTML = "";
                 for (let i = 0; i < result.length; i++) {
@@ -607,8 +607,8 @@ function onUiUxReady(content_div) {
             const ch_preload = document.querySelector("#setting_sd_model_checkpoint .wrap");
             ch_footer_preload.append(ch_preload);
 
-            const preload_model_observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (m) {
+            const preload_model_observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
                     if (oldcard) {
                         const hash_target = document.querySelector('#sd_checkpoint_hash');
                         const hash_value = hash_target.textContent;
@@ -626,7 +626,7 @@ function onUiUxReady(content_div) {
                 });
             });
 
-            preload_model_observer.observe(ch_preload, { childList: true, subtree: false });
+            preload_model_observer.observe(ch_preload, {childList: true, subtree: false});
 
 
             setupGenerateObservers();
@@ -712,12 +712,12 @@ function setupGenerateObservers() {
             const ts = document.querySelector(key + '_skip').closest('.portal');
             const loop = document.querySelector(key + '_loop');
 
-            tib.addEventListener("click", function () {
+            tib.addEventListener("click", function() {
                 loop?.classList.add('stop');
             });
 
-            const gen_observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (m) {
+            const gen_observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
 
                     if (tib.style.display === 'none') {
                         if (loop) {
@@ -741,7 +741,7 @@ function setupGenerateObservers() {
                 });
             });
 
-            gen_observer.observe(tib, { attributes: true, attributeFilter: ['style'] });
+            gen_observer.observe(tib, {attributes: true, attributeFilter: ['style']});
         }
 
     });
@@ -783,13 +783,13 @@ function initDefaultComponents(content_div) {
             snapOffset: 0,
             dragInterval: 1,
             //expandToMin: true,
-            elementStyle: function (dimension, size, gutterSize) {
+            elementStyle: function(dimension, size, gutterSize) {
                 //console.log(dimension, size, gutterSize);
                 return {
                     'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
                 };
             },
-            gutterStyle: function (dimension, gutterSize) {
+            gutterStyle: function(dimension, gutterSize) {
                 return {
                     'flex-basis': gutterSize + 'px',
                     'min-width': gutterSize + 'px',
@@ -1073,7 +1073,7 @@ function uiuxOptionSettings() {
             elem.max = value;
         });
     }
-    gradioApp().querySelector("#setting_uiux_max_resolution_output").addEventListener('input', function (e) {
+    gradioApp().querySelector("#setting_uiux_max_resolution_output").addEventListener('input', function(e) {
         let intvalue = parseInt(e.target.value);
         intvalue = Math.min(Math.max(intvalue, 512), 16384);
         sdMaxOutputResolution(intvalue);
@@ -1087,7 +1087,7 @@ function uiuxOptionSettings() {
             //const range_selectors = "[id$='_clone']:is(input[type='range'])";
             gradioApp()
                 .querySelectorAll(range_selectors)
-                .forEach(function (elem) {
+                .forEach(function(elem) {
                     let spacing = (elem.step / (elem.max - elem.min)) * 100.0;
                     let tsp = "max(3px, calc(" + spacing + "% - 1px))";
                     let fsp = "max(4px, calc(" + spacing + "% + 0px))";
@@ -1106,14 +1106,14 @@ function uiuxOptionSettings() {
         } else if (interactive) {
             gradioApp()
                 .querySelectorAll("input[type='range']")
-                .forEach(function (elem) {
+                .forEach(function(elem) {
                     var style = elem.style;
                     style.setProperty("--ae-slider-bg-overlay", "transparent");
                 });
         }
     }
 
-    gradioApp().querySelector("#setting_uiux_show_input_range_ticks input").addEventListener("click", function (e) {
+    gradioApp().querySelector("#setting_uiux_show_input_range_ticks input").addEventListener("click", function(e) {
         uiux_show_input_range_ticks(e.target.checked, true);
     });
     uiux_show_input_range_ticks(window.opts.uiux_show_input_range_ticks);
@@ -1121,13 +1121,13 @@ function uiuxOptionSettings() {
 
     function remove_overrides() {
         let checked_overrides = [];
-        gradioApp().querySelectorAll("#setting_uiux_ignore_overrides input").forEach(function (elem, i) {
+        gradioApp().querySelectorAll("#setting_uiux_ignore_overrides input").forEach(function(elem, i) {
             if (elem.checked) {
                 checked_overrides[i] = elem.nextElementSibling.innerHTML;
             }
         });
 
-        gradioApp().querySelectorAll("[id$='2img_override_settings'] .token").forEach(function (token) {
+        gradioApp().querySelectorAll("[id$='2img_override_settings'] .token").forEach(function(token) {
             let token_arr = token.querySelector("span").innerHTML.split(":");
             let token_name = token_arr[0];
             let token_value = token_arr[1];
@@ -1154,8 +1154,8 @@ function uiuxOptionSettings() {
             }
         });
     }
-    gradioApp().querySelector("#setting_uiux_ignore_overrides").addEventListener('click', function (e) {
-        setTimeout(function () {
+    gradioApp().querySelector("#setting_uiux_ignore_overrides").addEventListener('click', function(e) {
+        setTimeout(function() {
             remove_overrides();
         }, 100);
     });
@@ -1169,35 +1169,35 @@ function uiuxOptionSettings() {
     });
     */
 
-    const overrides_observer_class = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
+    const overrides_observer_class = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 //console.log(`Class changed to: ${mutation.target.className}`);
-                setTimeout(function () {
+                setTimeout(function() {
                     remove_overrides();
                 }, 1000);
             }
         });
     });
 
-    const overrides_observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
+    const overrides_observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
             if (mutation.addedNodes.length) {
                 //console.log(mutation.addedNodes.length + ' nodes added');
-                setTimeout(function () {
+                setTimeout(function() {
                     remove_overrides();
                 }, 1000);
             }
         });
     });
 
-    document.querySelectorAll("#txt2img_override_settings .wrap-inner, #img2img_override_settings .wrap_inner").forEach(function (elem) {
+    document.querySelectorAll("#txt2img_override_settings .wrap-inner, #img2img_override_settings .wrap_inner").forEach(function(elem) {
         overrides_observer.observe(elem, {
             childList: true
         });
     });
 
-    document.querySelectorAll("#txt2img_nav, #img2img_nav").forEach(function (elem) {
+    document.querySelectorAll("#txt2img_nav, #img2img_nav").forEach(function(elem) {
         overrides_observer_class.observe(elem, {
             attributes: true
         });
@@ -1212,7 +1212,7 @@ function uiuxOptionSettings() {
         }
     }
 
-    gradioApp().querySelector("#setting_uiux_no_slider_layout input").addEventListener("click", function (e) {
+    gradioApp().querySelector("#setting_uiux_no_slider_layout input").addEventListener("click", function(e) {
         uiux_no_slider_layout(e.target.checked, true);
     });
 
@@ -1225,7 +1225,7 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("aside-labels");
         }
     }
-    gradioApp().querySelector("#setting_uiux_show_labels_aside input").addEventListener("click", function (e) {
+    gradioApp().querySelector("#setting_uiux_show_labels_aside input").addEventListener("click", function(e) {
         uiux_show_labels_aside(e.target.checked, true);
     });
     uiux_show_labels_aside(window.opts.uiux_show_labels_aside);
@@ -1238,7 +1238,7 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("main-labels");
         }
     }
-    gradioApp().querySelector("#setting_uiux_show_labels_main input").addEventListener("click", function (e) {
+    gradioApp().querySelector("#setting_uiux_show_labels_main input").addEventListener("click", function(e) {
         uiux_show_labels_main(e.target.checked, true);
     });
     uiux_show_labels_main(window.opts.uiux_show_labels_main);
@@ -1251,7 +1251,7 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("tab-labels");
         }
     }
-    gradioApp().querySelector("#setting_uiux_show_labels_tabs input").addEventListener("click", function (e) {
+    gradioApp().querySelector("#setting_uiux_show_labels_tabs input").addEventListener("click", function(e) {
         uiux_show_labels_tabs(e.target.checked, true);
     });
     uiux_show_labels_tabs(window.opts.uiux_show_labels_tabs);
@@ -1263,7 +1263,7 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("no-extra-info");
         }
     }
-    gradioApp().querySelector("#setting_uiux_hide_extra_info input").addEventListener("click", function (e) {
+    gradioApp().querySelector("#setting_uiux_hide_extra_info input").addEventListener("click", function(e) {
         uiux_hide_extra_info(e.target.checked, true);
     });
     uiux_hide_extra_info(window.opts.uiux_hide_extra_info);
@@ -1276,7 +1276,7 @@ function uiuxOptionSettings() {
         const viewport = document.head.querySelector('meta[name="viewport"]');
         viewport.setAttribute("content", `width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=${value}`);
     }
-    comp_mobile_scale.addEventListener("change", function (e) {
+    comp_mobile_scale.addEventListener("change", function(e) {
         //e.preventDefault();
         //e.stopImmediatePropagation()
         comp_mobile_scale.value = e.target.value;
@@ -1318,7 +1318,7 @@ function setupOnLoadResources() {
     setupAnimationEventListeners();
 
     //const tempDiv = document.createElement('div');
-    const initSplitLib = function () {
+    const initSplitLib = function() {
         initDefaultComponents(content_div);
         onUiUxReady(content_div);
     };
@@ -1427,7 +1427,7 @@ function loadCurrentTemplate(data, i, callback) {
 
         if (target) {
 
-            xmlHttp.onreadystatechange = function () {
+            xmlHttp.onreadystatechange = function() {
 
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                     let tempDiv = document.createElement('div');
@@ -1503,9 +1503,9 @@ function setupLogger() {
     tempDiv.append(loggerUiUx);
     document.body.append(tempDiv);
 
-    (function (logger) {
+    (function(logger) {
         console.old = console.log;
-        console.log = function () {
+        console.log = function() {
             var output = "", arg, i;
 
             output += `
@@ -1579,14 +1579,13 @@ function setupLogger() {
     console.log("Hide extra info for labels, checkboxes: ", window.opts.uiux_hide_extra_info);
 
 
-
     const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
     if (isFirefox) {
         console.log("Go to the Firefox about:config page, then search and toggle layout. css.has-selector. enabled");
     }
 
     if (!window.opts.uiux_enable_console_log) {
-        console.log = function () { };
+        console.log = function() { };
     }
 
 
@@ -1618,7 +1617,7 @@ function observeGradioInit() {
 
         }
     });
-    observer.observe(gradioApp(), { childList: true, subtree: true });
+    observer.observe(gradioApp(), {childList: true, subtree: true});
 }
 
 document.addEventListener("DOMContentLoaded", () => {
