@@ -283,3 +283,7 @@ button.active .icon-sort {
 .icon-video {
     -webkit-mask-image: url(./html/svg/video-line.svg);
 }
+
+.icon-profile {
+    -webkit-mask-image: url(./html/svg/profile-line.svg);
+}
