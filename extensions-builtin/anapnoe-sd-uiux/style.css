@@ -3600,3 +3600,63 @@ input[type="range"]::-ms-fill-upper {
     position: relative;
     flex-wrap: wrap;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+table.popup-table {
+    width: 100%;
+}
+
+.popup-table td,
+.popup-table th {
+    border: var(--ae-border-size) solid var(--ae-panel-border-color);
+    padding: var(--ae-panel-padding);
+    box-sizing: border-box;
+    text-align: left;
+    white-space: normal;
+}
+
+.popup-table td {
+    line-break: anywhere;
+}
+
+.popup-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--ae-panel-bg-color);
+}
+
+.popup-table thead th:first-child {
+    left: 0;
+    z-index: 3;
+}
+
+.popup-table tr> :first-child {
+    position: sticky;
+    background: var(--ae-group-bg-color);
+    left: 0;
+}
+
+
+.popup-table td.muted {
+    width: 15%;
+    overflow: hidden;
+    font-size: 0;
+    border: 0;
+    background: var(--ae-group-bg-color);
+}
+
+.popup-table td.muted+td:not(.muted) {
+    width: 70%;
+}
+
+.popup-table td.link {
+    color: var(--ae-primary-color);
+}
+
+.popup-table tr>td:last-child {
+    width: 15%;
+}

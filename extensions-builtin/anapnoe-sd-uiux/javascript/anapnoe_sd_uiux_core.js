@@ -1,12 +1,14 @@
 const anapnoe_app_id = "#anapnoe_app";
 
 window.all_gallery_buttons = function() {
-    //orig_all_gallery_buttons();
+    // orig_all_gallery_buttons();
     var tabitem = gradioApp().querySelector('#main-nav-bar button.active')?.getAttribute('tabitemid');
     var visibleGalleryButtons = [];
+
     if (tabitem) {
-        //console.log(tabitem, allGalleryButtons);
+        // console.log(tabitem, allGalleryButtons);
         var allGalleryButtons = gradioApp().querySelectorAll(tabitem + ' .gradio-gallery .thumbnails > .thumbnail-small');
+
         allGalleryButtons?.forEach(function(elem) {
             if (elem.parentElement.offsetParent && elem.parentElement.offsetParent !== document.body) {
                 visibleGalleryButtons.push(elem);
@@ -34,6 +36,7 @@ window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
     var tid = 'txt2img_' + extraPage + '_edit_user_metadata';
     /* eslint-disable no-undef */
     var editor = extraPageUserMetadataEditors[tid];
+
     if (!editor) {
         editor = {};
         editor.page = gradioApp().getElementById(tid);
@@ -41,10 +44,12 @@ window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
         editor.button = gradioApp().querySelector("#" + tid + "_button");
         extraPageUserMetadataEditors[tid] = editor;
     }
+
     var cardName = event.target.parentElement.parentElement.getAttribute("data-name");
     if (!cardName) {
         cardName = event.target.parentElement.parentElement.parentElement.querySelector('.tree-list-item-label').innerHTML.trim();
     }
+
     editor.nameTextarea.value = cardName;
     updateInput(editor.nameTextarea);
     editor.button.click();
@@ -53,7 +58,7 @@ window.extraNetworksEditUserMetadata = function(event, tabname, extraPage) {
 };
 
 window.get_uiCurrentTabContent = function() {
-    //console.log(active_main_tab);
+    // console.log(active_main_tab);
     if (active_main_tab.id === "tab_txt2img") {
         return document.getElementById("txt2img_tabitem");
     } else if (active_main_tab.id === "tab_img2img") {
@@ -91,13 +96,14 @@ localStorage.setItem('UiUxComplete', "false");
 const default_ext_path = './file=extensions-builtin/anapnoe-sd-uiux/html/templates/';
 const default_libs_path = './file=extensions-builtin/anapnoe-sd-uiux/html/libs/';
 let total = 0;
-let active_main_tab;// = document.querySelector("#tab_txt2img");//null
+let active_main_tab; // = document.querySelector("#tab_txt2img");//null
 let loggerUiUx;
 const split_instances = [];
 
 function detectMobile() {
-    return ((window.innerWidth <= 768));//&& ( window.innerHeight <= 600 ) );
+    return (window.innerWidth <= 768); // && ( window.innerHeight <= 600 );
 }
+
 /*
 function debounce(func){
  var timer;
@@ -111,7 +117,7 @@ function debounce(func){
 function applyDefaultLayout(isMobile) {
     const anapnoe_app = document.querySelector(anapnoe_app_id);
     anapnoe_app.querySelectorAll("[mobile]").forEach((tabItem) => {
-        //console.log(tabItem);
+        // console.log(tabItem);
         if (isMobile) {
             if (tabItem.childElementCount === 0) {
                 const mobile_attr = tabItem.getAttribute("mobile");
@@ -120,7 +126,6 @@ function applyDefaultLayout(isMobile) {
                     if (mobile_target) {
                         tabItem.setAttribute("mobile-restore", `#${mobile_target.parentElement.id}`);
                         tabItem.append(mobile_target);
-
                     }
                 }
             }
@@ -148,8 +153,9 @@ function applyDefaultLayout(isMobile) {
 function switchMobile() {
     const anapnoe_app = document.querySelector(anapnoe_app_id);
     const optslayout = window.opts.uiux_default_layout;
-    //console.log(optslayout);
+    // console.log(optslayout);
     anapnoe_app.classList.add(`default-${optslayout.toLowerCase()}`);
+
     if (optslayout === "Auto") {
         /*
         window.addEventListener("resize", debounce(function(e){
@@ -162,15 +168,12 @@ function switchMobile() {
             applyDefaultLayout(isMobile);
         });
         applyDefaultLayout(detectMobile());
-
     } else if (optslayout === "Mobile") {
         applyDefaultLayout(true);
     } else {
         applyDefaultLayout(false);
     }
 }
-
-
 
 function getRootContainer() {
     return document.getElementById('tab_anapnoe_sd_uiux_core');
@@ -183,25 +186,20 @@ function mainTabs(element, tab) {
     const ntab = document.querySelector(tab);
     if (ntab) {
         ntab.style.display = 'block';
-        //console.log(tab, ntab);
+        // console.log(tab, ntab);
         active_main_tab = ntab;
     }
 }
 
 function setAttrSelector(parent_elem, content_div, count, index, length) {
+    // const t = parent_elem.getAttribute("data-timeout");
+    // const delay = t ? parseInt(t) : 0;
 
-    //const t = parent_elem.getAttribute("data-timeout");
-    //const delay = t ? parseInt(t) : 0;
-
-    //setTimeout(() => {
-
+    // setTimeout(() => {
     const mcount = count % 2;
-    //const parent_elem = this.el;
-
+    // const parent_elem = this.el;
     const s = parent_elem.getAttribute("data-selector");
     const sp = parent_elem.getAttribute("data-parent-selector");
-
-
     let target_elem;
 
     switch (mcount) {
@@ -214,16 +212,21 @@ function setAttrSelector(parent_elem, content_div, count, index, length) {
     }
 
     if (target_elem && parent_elem) {
+        if (parent_elem.classList.contains("dynamic")) {
+            const elementsToRemove = parent_elem.querySelectorAll(`${s}`);
+            elementsToRemove.forEach(elem => {
+                parent_elem.removeChild(elem);
+            });
+        }
         parent_elem.append(target_elem);
         total += 1;
         console.log("register | Ref", index, sp, s);
         const d = parent_elem.getAttribute('droppable');
         const adx = parent_elem.getAttribute('append-index');
 
-
         if (d) {
             const childs = Array.from(parent_elem.children);
-            //console.log("droppable", target_elem, parent_elem, childs);
+            // console.log("droppable", target_elem, parent_elem, childs);
             childs.forEach((c) => {
                 if (c !== target_elem) {
                     if (target_elem.className.indexOf('gradio-accordion') !== -1) {
@@ -245,35 +248,29 @@ function setAttrSelector(parent_elem, content_div, count, index, length) {
         if (hb) {
             document.querySelector(hb)?.classList.remove("hidden");
         }
-
     } else if (count < 4) {
-
         const t = parent_elem.getAttribute("data-timeout");
         const delay = t ? parseInt(t) : 500;
-
         setTimeout(() => {
             console.log(count + 1, "retry | ", delay, " | Ref", index, sp, s);
             setAttrSelector(parent_elem, content_div, count + 1, index, length);
         }, delay);
-
     } else {
         console.log("error | Ref", index, sp, s);
         total += 1;
-
     }
 
     if (total === length) {
-        console.log("Runtime components initilized");
+        console.log("Runtime components initialized");
         localStorage.setItem('UiUxReady', true);
     }
 
-    //}, delay );
-
+    // }, delay );
 }
 
 function testpopup() {
     const content_div = document.querySelector('#popup_tabitem');
-    //const meta_id = document.querySelector('.global-popup-inner > div')?.id;
+    // const meta_id = document.querySelector('.global-popup-inner > div')?.id;
     content_div.querySelectorAll(`.portal`).forEach((el, index, array) => {
         /*
         const childs = Array.from(el.children);
@@ -283,7 +280,6 @@ function testpopup() {
           if(ac === meta_id){
            c.style.display = "";
            el.style.display = "";
-
           }else{
            c.style.display = "none";
            if(childs.length === 1){
@@ -305,13 +301,14 @@ function testpopup() {
 }
 
 function createButtons4Extensions() {
-
     const other_extensions = document.querySelector(`#other_extensions`);
     const other_views = document.querySelector(`#split-left`);
-    //const other_views = document.querySelector(`#no-split-app`);
+    // const other_views = document.querySelector(`#no-split-app`);
+
     document.querySelectorAll(`#tabs > .tabitem`).forEach((c) => {
         const cid = c.id;
         const nid = cid.split('tab_')[1];
+
         if (cid !== "tab_txt2img" &&
             cid !== "tab_img2img" &&
             cid !== "tab_extras" &&
@@ -324,48 +321,45 @@ function createButtons4Extensions() {
             cid !== "tab_deforum_interface" &&
             cid !== "tab_anapnoe_dock" &&
             cid !== "tab_anapnoe_sd_uiux_core") {
-            //tab_openpose_editor
+
+            // tab_openpose_editor
             const temp = document.createElement('div');
             temp.innerHTML = `
-   <button tabItemId="#split-app, #${cid}_tabitem" 
-   tabGroup="main_group" 
-   data-click="#tabs" 
-   onclick="mainTabs(this, '#${cid}')" 
-   class="xtabs-tab">
-   <!-- <div class="mask-icon icon-train"></div> -->
-   <div class="icon-letters">${nid.slice(0, 2)}</div>
-   <span>${nid}</span>
-   </button>`;
+                <button tabItemId="#split-app, #${cid}_tabitem" 
+                        tabGroup="main_group" 
+                        data-click="#tabs" 
+                        onclick="mainTabs(this, '#${cid}')" 
+                        class="xtabs-tab">
+                    <!-- <div class="mask-icon icon-train"></div> -->
+                    <div class="icon-letters">${nid.slice(0, 2)}</div>
+                    <span>${nid}</span>
+                </button>`;
             const btn = temp.firstElementChild;
             other_extensions.append(btn);
-            //console.log(other_extensions, btn);
+            // console.log(other_extensions, btn);
 
             temp.innerHTML = `
-   <div id="${cid}_tabitem" class="xtabs-item other">
-    <div data-parent-selector="gradio-app" data-selector="#${cid} > div" class="portal">
-    </div>
-     </div>`;
+                <div id="${cid}_tabitem" class="xtabs-item other">
+                    <div data-parent-selector="gradio-app" data-selector="#${cid} > div" class="portal">
+                    </div>
+                </div>`;
 
             const view = temp.firstElementChild;
-            //console.log(other_views, view);
+            // console.log(other_views, view);
             other_views.append(view);
         }
-
     });
-
 }
 
 function setupExtraNetworksSearchSort() {
-
     const applyFilter = function(e) {
         const search_term = e.target.value.toLowerCase();
         const cards = e.target.getAttribute("data-target");
-        //console.log(search_term, cards )
+        // console.log(search_term, cards)
+
         gradioApp().querySelectorAll(cards).forEach(function(elem) {
-            //const text = elem.querySelector(".search_term").textContent;//elem.getAttribute("data-path").toLowerCase().split("\\").join("/");
-            //const text = elem.querySelector('.name').textContent.toLowerCase() + " " + elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();
-            const text = elem.getAttribute("data-sort-path").toLowerCase();//elem.querySelector('.search_term').textContent.toLowerCase();
-            let visible = text.indexOf(search_term) != -1;
+            const text = elem.getAttribute("data-sort-path").toLowerCase();
+            let visible = text.indexOf(search_term) !== -1;
             if (search_term.length < 3) {
                 visible = true;
             }
@@ -394,35 +388,35 @@ function setupExtraNetworksSearchSort() {
         const cardsArray = Array.from(cards);
         let sorted = cardsArray.sort(comparator);
 
-        const reverse_button = el.nextElementSibling;//closest(".reverse-order");
+        const reverse_button = el.nextElementSibling; // closest(".reverse-order");
         const reverse = reverse_button.className.indexOf("active") !== -1;
         if (reverse) {
             sorted.reverse();
         }
         sorted.forEach(e => cards_parent.appendChild(e));
-
     }
 
     document.querySelectorAll('.extra_networks_order_by').forEach((el) => {
         el.addEventListener('change', function(e) {
             applySort(e.target, this.value);
-            //console.log('You selected: ', this.value);
+            // console.log('You selected: ', this.value);
         });
+
         el.nextElementSibling.addEventListener('click', function(e) {
             applySort(el, el.value);
             console.log('You selected: ', el.value);
         });
     });
-
 }
 
 function updateExtraNetworksCards(el) {
-
     console.log("Starting optimizations for", el.id);
+
     el.querySelectorAll(".card, .card-button").forEach((card) => {
         const onclick_data = card.getAttribute("onClick");
         card.setAttribute("data-apply", onclick_data);
         card.removeAttribute("onClick");
+
         if (card.getAttribute("data-name")) {
             console.log("Remove EventListener", card.getAttribute("data-name"));
         } else {
@@ -430,9 +424,7 @@ function updateExtraNetworksCards(el) {
             if (card_closest && card_closest.getAttribute("data-name")) {
                 console.log("Remove EventListener", `${card_closest.getAttribute("data-name")} - ${card.getAttribute("title")}`);
             }
-
         }
-
     });
 
     el.querySelectorAll(".tree-list-content-file").forEach((tree) => {
@@ -445,7 +437,10 @@ function updateExtraNetworksCards(el) {
     console.log("Attach EventListener", el.id);
     el.addEventListener("click", function(e) {
         const ctarget = e.target;
-        if (ctarget && ctarget.className.indexOf("card") !== -1 || ctarget && ctarget.className.indexOf("tree-list-content") !== -1) {
+
+        if ((ctarget && ctarget.className.indexOf("card") !== -1) ||
+            (ctarget && ctarget.className.indexOf("tree-list-content") !== -1)) {
+
             let data_apply = ctarget.getAttribute("data-apply");
             if (!data_apply) {
                 const onclick_data = ctarget.getAttribute("onClick");
@@ -466,7 +461,6 @@ function updateExtraNetworksCards(el) {
             ctarget.click();
             ctarget.removeAttribute("onClick");
 
-
             if (ctarget.className.indexOf("tree-list-content-dir") !== -1) {
                 const search_closest = el.closest(".layout-extra-networks");
                 if (search_closest && ctarget.getAttribute("data-path")) {
@@ -482,7 +476,6 @@ function updateExtraNetworksCards(el) {
                 popup_trigger.click();
                 testpopup();
             }
-
         }
     });
 
@@ -493,13 +486,9 @@ function updateExtraNetworksCards(el) {
             testpopup();
         });
     });
-
-
-
 }
 
 function setupAnimationEventListeners() {
-
     document.addEventListener('animationend', function(e) {
         if (e.animationName === 'fade-out') {
             e.target.classList.add('hidden');
@@ -529,28 +518,29 @@ function showContributors() {
     const temp = document.createElement('div');
     temp.id = 'contributors_grid';
     temp.innerHTML = `Kindly allow us a moment to retrieve the contributors. 
- We're grateful for the many individuals who have generously put their time and effort to make this possible.`;
+    We're grateful for the many individuals who have generously put their time and effort to make this possible.`;
+
     contributors_view.append(temp);
 
     contributors_btn.addEventListener('click', function(e) {
-        //console.log(getAllContributors("anapnoe/stable-diffusion-webui-ux"));
+        // console.log(getAllContributors("anapnoe/stable-diffusion-webui-ux"));
         if (!contributors_btn.getAttribute("data-visited")) {
             contributors_btn.setAttribute("data-visited", "true");
             const promise = getAllContributorsRecursive("anapnoe/stable-diffusion-webui-ux");
             promise.then(function(result) {
-                //console.log(result)
+                // console.log(result)
                 temp.innerHTML = "";
                 for (let i = 0; i < result.length; i++) {
                     const login = result[i].login;
                     const html_url = result[i].html_url;
                     const avatar_url = result[i].avatar_url;
                     temp.innerHTML += `
-     <a href="${html_url}" target="_blank" rel="noopener noreferrer nofollow" class="contributor-button flexbox col">
-      <figure><img src="${avatar_url}" lazy="true"></figure>
-      <div class="contributor-name">
-       ${login}
-      </div>
-     </a>`;
+                        <a href="${html_url}" target="_blank" rel="noopener noreferrer nofollow" class="contributor-button flexbox col">
+                            <figure><img src="${avatar_url}" lazy="true"></figure>
+                            <div class="contributor-name">
+                                ${login}
+                            </div>
+                        </a>`;
                 }
             });
         }
@@ -558,7 +548,6 @@ function showContributors() {
 }
 
 function onUiUxReady(content_div) {
-
     const interval = setInterval(() => {
         const isUiUxReady = localStorage.getItem('UiUxReady');
         if (isUiUxReady === "true") {
@@ -571,17 +560,16 @@ function onUiUxReady(content_div) {
                 logger_screen.remove();
             }
 
-
             console.log("Starting optimizations for Extra Networks");
-            /* content_div.querySelector("#img2img_textual_inversion_cards_html")?.remove();
-            content_div.querySelector("#img2img_checkpoints_cards_html")?.remove();
-            content_div.querySelector("#img2img_hypernetworks_cards_html")?.remove();
-            content_div.querySelector("#img2img_lora_cards_html")?.remove();
+            // content_div.querySelector("#img2img_textual_inversion_cards_html")?.remove();
+            // content_div.querySelector("#img2img_checkpoints_cards_html")?.remove();
+            // content_div.querySelector("#img2img_hypernetworks_cards_html")?.remove();
+            // content_div.querySelector("#img2img_lora_cards_html")?.remove();
 
             console.log("Remove element #img2img_textual_inversion_cards_html");
             console.log("Remove element #img2img_checkpoints_cards_html");
             console.log("Remove element #img2img_hypernetworks_cards_html");
-            console.log("Remove element #img2img_lora_cards_html"); */
+            console.log("Remove element #img2img_lora_cards_html");
 
             content_div.querySelectorAll(".extra-network-cards, .extra-network-tree").forEach((el) => {
                 updateExtraNetworksCards(el);
@@ -592,10 +580,11 @@ function onUiUxReady(content_div) {
             setupExtraNetworksSearchSort();
 
             const ch_input = document.querySelector("#setting_sd_model_checkpoint .secondary-wrap input");
-            //const hash_target = document.querySelector('#sd_checkpoint_hash');
-            //const hash_old_value = hash_target.textContent;
+            // const hash_target = document.querySelector('#sd_checkpoint_hash');
+            // const hash_old_value = hash_target.textContent;
             const hash_old_value = ch_input.value;
             let oldcard = document.querySelector(`#txt2img_checkpoints_cards .card[data-apply*="${hash_old_value}"]`);
+
             if (oldcard) {
                 oldcard?.classList.add("selected");
                 console.log("Checkpoint name:", oldcard.getAttribute("data-name"), "<br>");
@@ -603,8 +592,8 @@ function onUiUxReady(content_div) {
 
             const ch_footer_preload = document.querySelector("#txt2img_checkpoints_main_footer .model-preloader");
             const ch_footer_selected = document.querySelector("#txt2img_checkpoints_main_footer .model-selected");
-
             const ch_preload = document.querySelector("#setting_sd_model_checkpoint .wrap");
+
             ch_footer_preload.append(ch_preload);
 
             const preload_model_observer = new MutationObserver(function(mutations) {
@@ -613,6 +602,7 @@ function onUiUxReady(content_div) {
                         const hash_target = document.querySelector('#sd_checkpoint_hash');
                         const hash_value = hash_target.textContent;
                         const card = document.querySelector(`#txt2img_checkpoints_cards .card[data-apply*="${hash_value}"]`);
+
                         if (card) {
                             if (oldcard !== card) {
                                 oldcard.classList.remove("selected");
@@ -627,83 +617,67 @@ function onUiUxReady(content_div) {
             });
 
             preload_model_observer.observe(ch_preload, {childList: true, subtree: false});
-
-
             setupGenerateObservers();
             uiuxOptionSettings();
-
-            //const main_nav_content = document.querySelector('#main_nav_content');
-            //const sidebar_tabs = document.querySelector('#sidebar_tabs');
-            //main_nav_content.append(sidebar_tabs);
+            // const main_nav_content = document.querySelector('#main_nav_content');
+            // const sidebar_tabs = document.querySelector('#sidebar_tabs');
+            // main_nav_content.append(sidebar_tabs);
             showContributors();
             switchMobile();
-
-
             localStorage.setItem('UiUxComplete', true);
 
-            //controlnet copy alpha mask for inpaint
-            //not needed any more but i will use this in img2img inpaint roundtrip
+            // controlnet copy alpha mask for inpaint
+            // not needed any more but i will use this in img2img inpaint roundtrip
             /*
             function copyCanvas(sourceId, destId) {
+                let sourceImage = document.querySelector(sourceId);
+                let destCanvas = document.querySelector(destId);
+                let destContext = destCanvas.getContext("2d");
+                destContext.clearRect(0, 0, destCanvas.width, destCanvas.height);
+                destContext.drawImage(sourceImage, 0, 0, destCanvas.width, destCanvas.height);
+                let imageData = destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
+                let data = imageData.data;
 
-             let sourceImage = document.querySelector(sourceId);
-             let destCanvas = document.querySelector(destId);
+                for (var i = 0; i < data.length; i += 4) {
+                    var alpha = data[i + 3];
+                    data[i] = 255;
+                    data[i + 1] = 255;
+                    data[i + 2] = 255;
+                    data[i + 3] = alpha;
+                }
 
-             let destContext = destCanvas.getContext("2d");
-
-             destContext.clearRect(0, 0, destCanvas.width, destCanvas.height);
-             destContext.drawImage(sourceImage, 0, 0, destCanvas.width, destCanvas.height);
-
-             let imageData = destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
-             let data = imageData.data;
-
-             for (var i = 0; i < data.length; i += 4) {
-              var alpha = data[i + 3];
-              data[i] = 255;
-              data[i + 1] = 255;
-              data[i + 2] = 255;
-              data[i + 3] = alpha;
-             }
-
-             destContext.putImageData(imageData, 0, 0);
+                destContext.putImageData(imageData, 0, 0);
             }
 
             window.addEventListener("keydown", function(event) {
-             if (event.key === "0") {
-              let source = "#txt2img_controlnet_ControlNet-0_input_image img";
-              let dest = "#txt2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
-              if(source && dest){
-               copyCanvas(source, dest);
-               console.log("copy to canvas inpaint");
-              }
-             }
+                if (event.key === "0") {
+                    let source = "#txt2img_controlnet_ControlNet-0_input_image img";
+                    let dest = "#txt2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
+                    if (source && dest) {
+                        copyCanvas(source, dest);
+                        console.log("copy to canvas inpaint");
+                    }
+                }
 
-             if (event.key === "9") {
-              let source = "#img2img_controlnet_ControlNet-0_input_image img";
-              let dest = "#img2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
-              if(source && dest){
-               copyCanvas(source, dest);
-               console.log("copy to canvas inpaint");
-              }
-             }
-
-
+                if (event.key === "9") {
+                    let source = "#img2img_controlnet_ControlNet-0_input_image img";
+                    let dest = "#img2img_controlnet_ControlNet-0_input_image canvas[key=mask]";
+                    if (source && dest) {
+                        copyCanvas(source, dest);
+                        console.log("copy to canvas inpaint");
+                    }
+                }
             });
             */
-
         }
     }, 500);
-
-
 }
 
 function setupGenerateObservers() {
-
     const keys = ["#txt2img", "#img2img", "#deforum"];
     keys.forEach((key) => {
         const tgb = document.querySelector(key + '_generate');
         if (tgb) {
-
             document.querySelector(key + '_nav')?.classList.remove('hidden');
 
             const tib = document.querySelector(key + '_interrupt');
@@ -718,7 +692,6 @@ function setupGenerateObservers() {
 
             const gen_observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(m) {
-
                     if (tib.style.display === 'none') {
                         if (loop) {
                             if (loop.className.indexOf('stop') !== -1 || loop.className.indexOf('active') === -1) {
@@ -743,15 +716,12 @@ function setupGenerateObservers() {
 
             gen_observer.observe(tib, {attributes: true, attributeFilter: ['style']});
         }
-
     });
-
 }
 
 function initDefaultComponents(content_div) {
     const anapnoe_app = document.querySelector(anapnoe_app_id);
     content_div.querySelectorAll(`div.split`).forEach((el) => {
-
         let id = el.id;
         let nid = content_div.querySelector(`#${id}`);
 
@@ -782,9 +752,9 @@ function initDefaultComponents(content_div) {
             gutterSize: parseInt(gutter),
             snapOffset: 0,
             dragInterval: 1,
-            //expandToMin: true,
+            // expandToMin: true,
             elementStyle: function(dimension, size, gutterSize) {
-                //console.log(dimension, size, gutterSize);
+                // console.log(dimension, size, gutterSize);
                 return {
                     'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
                 };
@@ -797,10 +767,9 @@ function initDefaultComponents(content_div) {
                 };
             },
         });
-
     });
 
-    //console.log(split_instances)
+    // console.log(split_instances)
 
     content_div.querySelectorAll(`.portal`).forEach((el, index, array) => {
         setAttrSelector(el, content_div, 0, index, array.length);
@@ -821,16 +790,15 @@ function initDefaultComponents(content_div) {
         }
 
         if (acc.className.indexOf('accordion-vertical') !== -1 && acc_split.className.indexOf('split') !== -1) {
-
             acc.classList.add('expand');
-            //const acc_gutter = acc_split.previousElementSibling;
+            // const acc_gutter = acc_split.previousElementSibling;
             const acc_split_id = acc_split.parentElement.id;
             const split_instance = split_instances[acc_split_id];
             acc_split.setAttribute('data-sizes', JSON.stringify(split_instance.getSizes()));
 
             ctrg?.addEventListener("click", () => {
                 acc.classList.toggle('expand');
-                //acc_gutter.classList.toggle('pointer-events-none');
+                // acc_gutter.classList.toggle('pointer-events-none');
                 if (acc_split.className.indexOf('v-expand') !== -1) {
                     acc_split.classList.remove('v-expand');
                     split_instance.setSizes(JSON.parse(acc_split.getAttribute('data-sizes')));
@@ -839,7 +807,7 @@ function initDefaultComponents(content_div) {
                     let sizes = split_instance.getSizes();
                     acc_split.setAttribute('data-sizes', JSON.stringify(sizes));
 
-                    //console.log(sizes)
+                    // console.log(sizes)
                     sizes[sizes.length - 1] = 0;
                     sizes[sizes.length - 2] = 100;
 
@@ -857,9 +825,7 @@ function initDefaultComponents(content_div) {
         }
     });
 
-
     function callToAction(el, tids, pid) {
-
         const acc_bar = el.closest(".accordion-bar");
         if (acc_bar) {
             const acc = acc_bar.parentElement;
@@ -877,24 +843,21 @@ function initDefaultComponents(content_div) {
         }
 
         const txt = el.querySelector('span')?.innerHTML.toLowerCase();
-        //console.log(txt, pid)
-        //window.alert(txt, pid);
+        // console.log(txt, pid)
+        // window.alert(txt, pid);
         /*
         if (txt && pid) {
          document.querySelectorAll(`${pid} .tab-nav button, [data-parent-selector="${pid}"] .tab-nav button`).forEach(function (elm) {
-          //console.log(elm.innerHTML, txt);
+          // console.log(elm.innerHTML, txt);
           if (elm.innerHTML.toLowerCase().indexOf(txt) !== -1) {
            elm.click();
           }
          });
         }
         */
-
-
     }
 
     content_div.querySelectorAll(`.xtabs-tab`).forEach((el) => {
-
         el.addEventListener('click', () => {
             const tabParent = el.parentElement;
             const tgroup = el.getAttribute("tabGroup");
@@ -904,7 +867,7 @@ function initDefaultComponents(content_div) {
                 tab.classList.remove('active');
                 const tids = tab.getAttribute("tabItemId");
                 anapnoe_app.querySelectorAll(tids).forEach((tabItem) => {
-                    //tabItem.classList.add('hidden');
+                    // tabItem.classList.add('hidden');
                     tabItem.classList.remove('fade-in');
                     tabItem.classList.add('fade-out');
                 });
@@ -917,7 +880,6 @@ function initDefaultComponents(content_div) {
                             hideActive(tab);
                         }
                     });
-
             } else if (tabParent) {
                 const tabs = [].slice.call(tabParent.children);
                 tabs.forEach((tab) => {
@@ -929,27 +891,29 @@ function initDefaultComponents(content_div) {
 
             const tids = el.getAttribute("tabItemId");
             anapnoe_app.querySelectorAll(tids).forEach((tabItem) => {
-                //tabItem.classList.remove('hidden');
+                // tabItem.classList.remove('hidden');
                 tabItem.classList.remove('fade-out');
                 tabItem.classList.add('fade-in');
-                //console.log('tab', tids, tabItem);
+
+                tabItem.querySelectorAll(`.portal.dynamic`).forEach((dpEl, index, array) => {
+                    setAttrSelector(dpEl, document, 0, index, array.length);
+                });
+                // console.log('tab', tids, tabItem);
             });
 
             el.classList.add('active');
             callToAction(el, tids, pid);
-
         });
 
         const active = el.getAttribute("active");
         if (!active) {
             const tids = el.getAttribute("tabItemId");
             anapnoe_app.querySelectorAll(tids).forEach((tabItem) => {
-                //tabItem.classList.add('hidden');
+                // tabItem.classList.add('hidden');
                 tabItem.classList.remove('fade-in');
                 tabItem.classList.add('fade-out');
             });
         }
-
     });
 
     content_div.querySelectorAll(`.xtabs-tab[active]`).forEach((el) => {
@@ -957,12 +921,16 @@ function initDefaultComponents(content_div) {
         const tids = el.getAttribute("tabItemId");
         const pid = el.getAttribute("data-click");
         anapnoe_app.querySelectorAll(tids).forEach((tabItem) => {
-            //tabItem.classList.remove('hidden');
+            // tabItem.classList.remove('hidden');
             tabItem.classList.remove('fade-out');
             tabItem.classList.add('fade-in');
+
+            tabItem.querySelectorAll(`.portal.dynamic`).forEach((dpEl, index, array) => {
+                setAttrSelector(dpEl, document, 0, index, array.length);
+            });
         });
         callToAction(el, tids, pid);
-        //console.log('tab', tids, el);
+        // console.log('tab', tids, el);
     });
 
     content_div.querySelectorAll(`.ae-button`).forEach((el) => {
@@ -984,7 +952,6 @@ function initDefaultComponents(content_div) {
             el.classList.remove('active');
         }
 
-
         if (toggle) {
             el.addEventListener('click', (e) => {
                 const input = el.querySelector('input');
@@ -1004,11 +971,9 @@ function initDefaultComponents(content_div) {
         const adc = el.getAttribute("data-click");
         if (adc) {
             el.addEventListener('click', (e) => {
-
                 if (el.className.indexOf("refresh-extra-networks") !== -1) {
                     const ctemp = el.closest(".template");
                     const ckey = ctemp?.getAttribute("key") || "txt2img";
-
                     const cpane = document.querySelector(`#${ckey}_pane > div`);
                     const elementsToAppend = [
                         document.querySelector(`#${ckey}_dirs`),
@@ -1031,48 +996,41 @@ function initDefaultComponents(content_div) {
                     btn_refresh_internal.dispatchEvent(new Event("click"));
 
                     setTimeout(() => {
-
                         const asd = document.querySelector(`#${ckey}_aside_split`);
                         asd.querySelectorAll(`.portal`).forEach((elm, index, array) => {
                             setAttrSelector(elm, asd, 0, index, array.length);
                         });
 
-                        //setupExtraNetworksForTab('txt2img');
-
-                        //updateExtraNetworksCards(asd);
-
+                        // setupExtraNetworksForTab('txt2img');
+                        // updateExtraNetworksCards(asd);
                     }, 1000);
-
                 }
 
-                //}else{
+                // } else {
                 document.querySelectorAll(adc).forEach((el) => {
                     el.click();
                 });
                 //}
             });
         }
-
     });
-
 
     // try to attach Logger Screen to main before full UIUXReady
     const asideconsole = document.querySelector("#container-console-log");
     asideconsole.append(loggerUiUx);
     document.querySelector("#logger_screen")?.remove();
-
-
 }
 
 function uiuxOptionSettings() {
-
     const anapnoe_app = document.querySelector(anapnoe_app_id);
+
     // sd max resolution output
     function sdMaxOutputResolution(value) {
         gradioApp().querySelectorAll('[id$="2img_width"] input,[id$="2img_height"] input').forEach((elem) => {
             elem.max = value;
         });
     }
+
     gradioApp().querySelector("#setting_uiux_max_resolution_output").addEventListener('input', function(e) {
         let intvalue = parseInt(e.target.value);
         intvalue = Math.min(Math.max(intvalue, 512), 16384);
@@ -1084,32 +1042,28 @@ function uiuxOptionSettings() {
     function uiux_show_input_range_ticks(value, interactive) {
         if (value) {
             const range_selectors = "input[type='range']";
-            //const range_selectors = "[id$='_clone']:is(input[type='range'])";
-            gradioApp()
-                .querySelectorAll(range_selectors)
-                .forEach(function(elem) {
-                    let spacing = (elem.step / (elem.max - elem.min)) * 100.0;
-                    let tsp = "max(3px, calc(" + spacing + "% - 1px))";
-                    let fsp = "max(4px, calc(" + spacing + "% + 0px))";
-                    var style = elem.style;
-                    style.setProperty(
-                        "--ae-slider-bg-overlay",
-                        "repeating-linear-gradient( 90deg, transparent, transparent " +
-                        tsp +
-                        ", var(--ae-input-border-color) " +
-                        tsp +
-                        ", var(--ae-input-border-color) " +
-                        fsp +
-                        " )"
-                    );
-                });
+            // const range_selectors = "[id$='_clone']:is(input[type='range'])";
+            gradioApp().querySelectorAll(range_selectors).forEach(function(elem) {
+                let spacing = (elem.step / (elem.max - elem.min)) * 100.0;
+                let tsp = "max(3px, calc(" + spacing + "% - 1px))";
+                let fsp = "max(4px, calc(" + spacing + "% + 0px))";
+                var style = elem.style;
+                style.setProperty(
+                    "--ae-slider-bg-overlay",
+                    "repeating-linear-gradient( 90deg, transparent, transparent " +
+                    tsp +
+                    ", var(--ae-input-border-color) " +
+                    tsp +
+                    ", var(--ae-input-border-color) " +
+                    fsp +
+                    " )"
+                );
+            });
         } else if (interactive) {
-            gradioApp()
-                .querySelectorAll("input[type='range']")
-                .forEach(function(elem) {
-                    var style = elem.style;
-                    style.setProperty("--ae-slider-bg-overlay", "transparent");
-                });
+            gradioApp().querySelectorAll("input[type='range']").forEach(function(elem) {
+                var style = elem.style;
+                style.setProperty("--ae-slider-bg-overlay", "transparent");
+            });
         }
     }
 
@@ -1117,7 +1071,6 @@ function uiuxOptionSettings() {
         uiux_show_input_range_ticks(e.target.checked, true);
     });
     uiux_show_input_range_ticks(window.opts.uiux_show_input_range_ticks);
-
 
     function remove_overrides() {
         let checked_overrides = [];
@@ -1148,7 +1101,6 @@ function uiuxOptionSettings() {
             if (checked_overrides.indexOf(token_name) != -1) {
                 gradioApp().querySelector("[id$='2img_override_settings']").classList.add("show");
                 token.querySelector(".token-remove").click();
-
             } else {
                 // maybe we add them again, for now we can select and add the removed tokens manually from the drop down
             }
@@ -1172,7 +1124,7 @@ function uiuxOptionSettings() {
     const overrides_observer_class = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                //console.log(`Class changed to: ${mutation.target.className}`);
+                // console.log(`Class changed to: ${mutation.target.className}`);
                 setTimeout(function() {
                     remove_overrides();
                 }, 1000);
@@ -1183,7 +1135,7 @@ function uiuxOptionSettings() {
     const overrides_observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.addedNodes.length) {
-                //console.log(mutation.addedNodes.length + ' nodes added');
+                // console.log(mutation.addedNodes.length + ' nodes added');
                 setTimeout(function() {
                     remove_overrides();
                 }, 1000);
@@ -1203,7 +1155,6 @@ function uiuxOptionSettings() {
         });
     });
 
-
     function uiux_no_slider_layout(value) {
         if (value) {
             anapnoe_app.classList.add("no-slider-layout");
@@ -1215,7 +1166,6 @@ function uiuxOptionSettings() {
     gradioApp().querySelector("#setting_uiux_no_slider_layout input").addEventListener("click", function(e) {
         uiux_no_slider_layout(e.target.checked, true);
     });
-
     uiux_no_slider_layout(window.opts.uiux_no_slider_layout);
 
     function uiux_show_labels_aside(value) {
@@ -1225,11 +1175,11 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("aside-labels");
         }
     }
+
     gradioApp().querySelector("#setting_uiux_show_labels_aside input").addEventListener("click", function(e) {
         uiux_show_labels_aside(e.target.checked, true);
     });
     uiux_show_labels_aside(window.opts.uiux_show_labels_aside);
-
 
     function uiux_show_labels_main(value) {
         if (value) {
@@ -1238,11 +1188,11 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("main-labels");
         }
     }
+
     gradioApp().querySelector("#setting_uiux_show_labels_main input").addEventListener("click", function(e) {
         uiux_show_labels_main(e.target.checked, true);
     });
     uiux_show_labels_main(window.opts.uiux_show_labels_main);
-
 
     function uiux_show_labels_tabs(value) {
         if (value) {
@@ -1251,6 +1201,7 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("tab-labels");
         }
     }
+
     gradioApp().querySelector("#setting_uiux_show_labels_tabs input").addEventListener("click", function(e) {
         uiux_show_labels_tabs(e.target.checked, true);
     });
@@ -1263,22 +1214,24 @@ function uiuxOptionSettings() {
             anapnoe_app.classList.remove("no-extra-info");
         }
     }
+
     gradioApp().querySelector("#setting_uiux_hide_extra_info input").addEventListener("click", function(e) {
         uiux_hide_extra_info(e.target.checked, true);
     });
     uiux_hide_extra_info(window.opts.uiux_hide_extra_info);
 
-
     const comp_mobile_scale_range = gradioApp().querySelector("#setting_uiux_mobile_scale input[type=range]");
     comp_mobile_scale_range.classList.add("hidden");
     const comp_mobile_scale = gradioApp().querySelector("#setting_uiux_mobile_scale input[type=number]");
+
     function uiux_mobile_scale(value) {
         const viewport = document.head.querySelector('meta[name="viewport"]');
         viewport.setAttribute("content", `width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=${value}`);
     }
+
     comp_mobile_scale.addEventListener("change", function(e) {
-        //e.preventDefault();
-        //e.stopImmediatePropagation()
+        // e.preventDefault();
+        // e.stopImmediatePropagation()
         comp_mobile_scale.value = e.target.value;
         window.updateInput(comp_mobile_scale);
         console.log('change', e.target.value);
@@ -1286,14 +1239,14 @@ function uiuxOptionSettings() {
     });
 
     uiux_mobile_scale(window.opts.uiux_mobile_scale);
-
 }
 
 function setupAdditionalStylesForExtensions() {
     const iibframe = document.querySelector("#infinite_image_browsing_container_wrapper > iframe");
     if (iibframe) {
-        var css = document.querySelector('[rel="stylesheet"][href*="user"]');
-        var iibcss = document.querySelector('[rel="stylesheet"][href*="style-iibrowser"]');
+        const css = document.querySelector('[rel="stylesheet"][href*="user"]');
+        const iibcss = document.querySelector('[rel="stylesheet"][href*="style-iibrowser"]');
+
         iibframe.addEventListener("load", ev => {
             const iframeDoc = ev.target.contentDocument.head;
             if (css) {
@@ -1309,7 +1262,6 @@ function setupAdditionalStylesForExtensions() {
 }
 
 function setupOnLoadResources() {
-
     const content_div = document.querySelector("#anapnoe_app");
     gradioApp().insertAdjacentElement('afterbegin', content_div);
 
@@ -1317,7 +1269,7 @@ function setupOnLoadResources() {
     createButtons4Extensions();
     setupAnimationEventListeners();
 
-    //const tempDiv = document.createElement('div');
+    // const tempDiv = document.createElement('div');
     const initSplitLib = function() {
         initDefaultComponents(content_div);
         onUiUxReady(content_div);
@@ -1331,12 +1283,10 @@ function setupOnLoadResources() {
     content_div.appendChild(script);
 
     setupAdditionalStylesForExtensions();
-
 }
 
 function removeStyleAssets() {
-
-    //console.log("Starting optimizations for Extra Networks");
+    // console.log("Starting optimizations for Extra Networks");
     console.log("Starting optimizations");
     document.querySelector("#img2img_textual_inversion_cards_html")?.remove();
     document.querySelector("#img2img_checkpoints_cards_html")?.remove();
@@ -1349,13 +1299,12 @@ function removeStyleAssets() {
     console.log("Remove element #img2img_lora_cards_html");
 
     document.querySelectorAll(`
- [rel="stylesheet"][href*="/assets/"], 
- [rel="stylesheet"][href*="theme.css"],
- [rel="stylesheet"][href*="file=style.css"]`).forEach((c) => {
+        [rel="stylesheet"][href*="/assets/"], 
+        [rel="stylesheet"][href*="theme.css"],
+        [rel="stylesheet"][href*="file=style.css"]`).forEach((c) => {
         c.remove();
-        //loggerUiUx.innerHTML = `Remove stylesheets ${c.getAttribute("href")}`;
+        // loggerUiUx.innerHTML = `Remove stylesheets ${c.getAttribute("href")}`;
         console.log("Remove stylesheet", c.getAttribute("href"));
-
     });
 
     const styler = document.querySelectorAll('.styler, [class*="svelte"]:not(input)');
@@ -1363,10 +1312,8 @@ function removeStyleAssets() {
     let s = 0;
     styler.forEach((c) => {
         if (c.style.display !== "none" && c.style.display !== "block") {
-            //if(c.className.indexOf('hidden') === -1 && c.className.indexOf('hide') === -1){
             c.removeAttribute("style");
             s++;
-            //}
         }
 
         [...c.classList].filter(c => {
@@ -1374,19 +1321,18 @@ function removeStyleAssets() {
         }).forEach(e => {
             c.classList.remove(e);
         });
-
     });
-    //loggerUiUx.innerHTML = `Remove inline styles from DOM selectors:${count} removed:${s}`;
+    // loggerUiUx.innerHTML = `Remove inline styles from DOM selectors:${count} removed:${s}`;
     console.log("Remove inline styles from DOM", "Total Selectors:", count, "Removed Selectors:", s);
     console.log("Finishing optimizations");
-    //console.log("Loading template files");
+    // console.log("Loading template files");
     templateData();
 }
 
 function getNestedTemplates(container) {
     const nestedData = [];
     container.querySelectorAll(`.template:not([status])`).forEach((el, j) => {
-        //console.log(el, j)
+        // console.log(el, j)
         const obj = {};
         const url = el.getAttribute('url');
         if (url) {
@@ -1418,7 +1364,6 @@ function loadCurrentTemplate(data, i, callback) {
     let target;
 
     if (next) {
-
         if (curr_data?.parent) {
             target = curr_data.parent;
         } else if (curr_data?.id) {
@@ -1426,9 +1371,7 @@ function loadCurrentTemplate(data, i, callback) {
         }
 
         if (target) {
-
             xmlHttp.onreadystatechange = function() {
-
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                     let tempDiv = document.createElement('div');
                     if (curr_data.key) {
@@ -1443,12 +1386,10 @@ function loadCurrentTemplate(data, i, callback) {
                         data = data.concat(nestedData);
                     }
 
-                    //console.log(data)
+                    // console.log(data)
                     target.setAttribute("status", "true");
                     target.append(tempDiv.firstElementChild);
-
                     loadCurrentTemplate(data, i + 1, callback);
-
                 } else if (xmlHttp.readyState == 4 && xmlHttp.status == 404) {
                     target.setAttribute("status", "error");
                     loadCurrentTemplate(data, i + 1, callback);
@@ -1459,25 +1400,18 @@ function loadCurrentTemplate(data, i, callback) {
             console.log("Loading template", url);
             xmlHttp.open("GET", url, true); // true for asynchronous
             xmlHttp.send(null);
-
         }
-
     } else {
-        //console.log("InitScripts")
-        //loggerUiUx.innerHTML = `Finished`;
+        // console.log("InitScripts")
+        // loggerUiUx.innerHTML = `Finished`;
         console.log("Template files merged successfully");
         console.log("Init runtime components");
         callback();
-        //setupOnLoadResources();
-
+        // setupOnLoadResources();
     }
-
-
-
 }
 
 function templateData() {
-
     const path = default_ext_path;
     const data = [
         {
@@ -1488,12 +1422,9 @@ function templateData() {
     ];
 
     loadCurrentTemplate(data, 0, setupOnLoadResources);
-
 }
 
-
 function setupLogger() {
-
     const tempDiv = document.createElement('div');
     tempDiv.id = "logger_screen";
     tempDiv.style = `position: fixed; inset: 0; background-color: black; z-index: 99999; display: flex; flex-direction: column; overflow:auto;`;
@@ -1509,7 +1440,7 @@ function setupLogger() {
             var output = "", arg, i;
 
             output += `
-            <div class="log-row"><span class="log-date">${new Date().toLocaleString().replace(',', '')}</span>`;
+                <div class="log-row"><span class="log-date">${new Date().toLocaleString().replace(',', '')}</span>`;
             for (i = 0; i < arguments.length; i++) {
                 arg = arguments[i];
                 const argstr = arg.toString().toLowerCase();
@@ -1534,7 +1465,7 @@ function setupLogger() {
                 }
 
                 output += `
-                <span class="log-${(typeof arg)} ${acolor}">`;
+                    <span class="log-${(typeof arg)} ${acolor}">`;
                 if (
                     typeof arg === "object" &&
                     typeof JSON === "object" &&
@@ -1547,12 +1478,10 @@ function setupLogger() {
 
                 output += " </span>";
             }
-
             logger.innerHTML += output + "</div>";
             console.old.apply(undefined, arguments);
         };
     })(document.getElementById("logger"));
-
 
     console.log(
         '\n', "╔═╗╔═╦╦═╗╔═╦═╦╦═╦═╗", '\n', "║╬╚╣║║║╬╚╣╬║║║║╬║╩╣", '\n', "╚══╩╩═╩══╣╔╩╩═╩═╩═╝", '\n', "─────────╚╝"
@@ -1578,16 +1507,14 @@ function setupLogger() {
     console.log("Tabs labels: ", window.opts.uiux_show_labels_tabs);
     console.log("Hide extra info for labels, checkboxes: ", window.opts.uiux_hide_extra_info);
 
-
     const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
     if (isFirefox) {
         console.log("Go to the Firefox about:config page, then search and toggle layout. css.has-selector. enabled");
     }
 
     if (!window.opts.uiux_enable_console_log) {
-        console.log = function() { };
+        console.log = function() {};
     }
-
 
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
@@ -1598,23 +1525,18 @@ function setupLogger() {
     link.href = './file=extensions-builtin/anapnoe-sd-uiux/html/favicon.svg';
 
     removeStyleAssets();
-
 }
-
 
 function observeGradioInit() {
     const observer = new MutationObserver(() => {
         const block = gradioApp().querySelector("#tab_anapnoe_sd_uiux_core");
         if (block) {
-            //if (block && t && c && h && l) {
             if (window.opts && Object.keys(window.opts).length) {
                 observer.disconnect();
                 setTimeout(() => {
                     setupLogger();
                 }, 1000);
             }
-
-
         }
     });
     observer.observe(gradioApp(), {childList: true, subtree: true});
