@@ -1,43 +1,58 @@
-# Stable Diffusion web UI-UX
-A bespoke, highly adaptable user interface for the Stable Diffusion, utilizing the powerful Gradio library. This cutting-edge browser interface offer an unparalleled level of customization and optimization for users, setting it apart from other web interfaces.
+# Stable Diffusion WebUI UX Forge
+A bespoke, highly adaptable, blazing fast user interface for Stable Diffusion, utilizing the powerful [Gradio](https://www.gradio.app/) library. This cutting-edge browser interface offers an unparalleled level of customization and optimization for users, setting it apart from other web interfaces.
+
+[🌟 Your Support Makes a Difference! 🌟](https://buymeacoffee.com/dayanbayah)
 
 ![](screenshot.png)
 
 ## Optimizations
-- Removing redundant Checkpoints and "Extra Networks" (Textual Inversion, Lora, and Hypernetworks) from img2img to reduce duplicated images and event listeners.
-- Eradicating inline event listeners from "Extra Networks" cards and action buttons.
-- Applying an event delegation pattern to further streamline the code by consolidating event handling for "Extra Networks" cards and action buttons.
-- Replacing all default Gradio stylesheets in the DOM with an optimized version that promote better visual coherence across components.
-- Eliminating inline styles and Svelte classes from the DOM to minimize clutter and improve efficiency.
+- **Redundant Checkpoints & Extra Networks**: Removing redundant Checkpoints and "Extra Networks" (Textual Inversion, Lora, and Hypernetworks) from img2img to reduce duplicated images and event listeners.
+- **Inline Event Listeners**: Eradicating inline event listeners from "Extra Networks" cards and action buttons.
+- **Event Delegation Pattern**: Applying an event delegation pattern to further streamline the code by consolidating event handling for "Extra Networks" cards and action buttons.
+- **Optimized Stylesheets**: Enhanced visual coherence by substituting all default Gradio stylesheets in the DOM with an optimized version.
+- **Inline Styles & Svelte Classes**: Improved efficiency by eliminating unnecessary inline styles and Svelte classes.
 
-## Features webui-ux 
-- Mobile responsive design
-- A versatile micro-template engine that can be leveraged by other extensions
-- Customizable theme styles through a user-friendly configuration interface
-- Built-in console log
-- Option to ignore overrides
-- Support for tick marks on input range sliders for improved usability
-- Toggle option between slider and numeric input modes, ensuring a compact interface when numeric input mode is enabled
-- Seamless UI integration for the Infinite Image Browsing Extension
-- Seamless UI integration for the Deforum Extention
+## Features Overview
+- **Mobile Responsive Design**: Optimal display and usability across various devices.
+- **Versatile Micro-Template Engine**: Leverage for enhanced functionality through other extensions.
+- **Customizable Theme Styles**: User-friendly interface for theme customization.
+- **Built-in Console Log**: Debugging capabilities for developers.
+- **Production and Development Modes**: Dynamically compile the web UI UX using Vite directly from the interface.
+- **Ignore Overrides Option**: Flexibility to maintain original settings when necessary.
+- **Enhanced Usability for Sliders**: Input range sliders support tick marks for improved interaction.
+- **Toggle Input Modes**: Switch between slider and numeric input modes for a compact interface.
+- **Compatible with Gradio 3 and 4**: Works seamlessly with both Gradio 3 and Gradio 4 frameworks.
 
-## Workspaces UI-UX (work in progress)
+## Seamless UI Integration with Extensions
+- **Infinite Image Browsing Extension**
+- **Deforum Extension**
+- **Prompt-All-In-One Extension**
+- **Aspect-Ratio-Helper Extension**
+  
+## Todo
+- Separate and organize CSS into individual files (in progress).
+- Create documentation for developers on how to incorporate their components into various areas of the UI/UX.
+- Implement fullscreen gallery functionality.
+- Fork the Gradio project and contribute to enhancing their components.
+
+
+## Advanced Theme Style Configurator (in progress)(upcoming feature)
+A sophisticated theme editor allowing you to personalize any aspect of the UI-UX. Tailor the visual experience of the user interface with the Advanced Theme Style configurator.
+
+[🌟 Get early access to Advanced Theme Style Configurator! 🌟](https://buymeacoffee.com/dayanbayah)
+
+![anapnoe-ui-ux-theme-editor-advanced](https://github.com/anapnoe/sd-webui-ux/blob/main/assets/images/anapnoe-ui-ux-theme-editor-advanced.png)
+
+
+## Workspaces UI-UX (in progress)(upcoming feature)
 The workspaces extension empowers you to create customized views and organize them according to your unique preferences. With an intuitive drag-and-drop interface, you can design workflows that are perfectly tailored to your specific requirements, giving you ultimate control over your work environment.
 
-![workspaces](https://github.com/anapnoe/stable-diffusion-webui-ux/assets/124302297/15db3c70-6fbf-4692-85f3-85cd8df58f47)
+[🌟 Get early access to Workspaces! 🌟](https://buymeacoffee.com/dayanbayah)
 
-[Become a supporter and get early access to Workspaces for UI-UX.](https://buymeacoffee.com/dayanbayah)
-
-## Infinite image browsing integration
-Seamless integration with the [Infinite image browsing](https://github.com/zanllp/sd-webui-infinite-image-browsing) extension.
-
-![InfiniteImageBrowserIntegration](https://github.com/anapnoe/stable-diffusion-webui-ux/assets/124302297/f9048ff4-0d78-4227-8b3f-5a282d24e5cb)
-
-## Todo
-- Fullscreen Gallery Support
+![anapnoe-ui-ux-workspaces](https://github.com/anapnoe/sd-webui-ux/blob/main/assets/images/anapnoe-ui-ux-workspaces.png)
 
 
-## Features
+## SD Features
 [Detailed feature showcase with images](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features):
 - Original txt2img and img2img modes
 - One click install and run script (but you still must install python and git)
@@ -178,7 +193,7 @@ wget -q https://raw.githubusercontent.com/anapnoe/stable-diffusion-webui-ux/mast
 ```
 Or just clone the repo wherever you want:
 ```bash
-git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-ux.git
 ```
 
 3. Run `webui.sh`.
