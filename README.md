@@ -1,4 +1,4 @@
-# Stable Diffusion WebUI UX Forge
+# Stable Diffusion WebUI UX
 A bespoke, highly adaptable, blazing fast user interface for Stable Diffusion, utilizing the powerful [Gradio](https://www.gradio.app/) library. This cutting-edge browser interface offers an unparalleled level of customization and optimization for users, setting it apart from other web interfaces.
 
 [🌟 Your Support Makes a Difference! 🌟](https://buymeacoffee.com/dayanbayah)
